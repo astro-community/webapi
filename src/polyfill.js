@@ -1,0 +1,108 @@
+import {
+	AbortController,
+	AbortSignal,
+	Blob,
+	ByteLengthQueuingStrategy,
+	CountQueuingStrategy,
+	CustomEvent,
+	DOMException,
+	Event,
+	EventTarget,
+	File,
+	FormData,
+	Headers,
+	ReadableByteStreamController,
+	ReadableStream,
+	ReadableStreamBYOBReader,
+	ReadableStreamBYOBRequest,
+	ReadableStreamDefaultController,
+	ReadableStreamDefaultReader,
+	Request,
+	Response,
+	TransformStream,
+	WritableStream,
+	WritableStreamDefaultController,
+	WritableStreamDefaultWriter,
+
+	cancelAnimationFrame,
+	clearTimeout,
+	fetch,
+	requestAnimationFrame,
+	setTimeout,
+} from './ponyfill.js'
+
+export {
+	AbortController,
+	AbortSignal,
+	Blob,
+	ByteLengthQueuingStrategy,
+	CountQueuingStrategy,
+	CustomEvent,
+	DOMException,
+	Event,
+	EventTarget,
+	File,
+	FormData,
+	Headers,
+	ReadableByteStreamController,
+	ReadableStream,
+	ReadableStreamBYOBReader,
+	ReadableStreamBYOBRequest,
+	ReadableStreamDefaultController,
+	ReadableStreamDefaultReader,
+	Request,
+	Response,
+	TransformStream,
+	WritableStream,
+	WritableStreamDefaultController,
+	WritableStreamDefaultWriter,
+
+	cancelAnimationFrame,
+	clearTimeout,
+	fetch,
+	requestAnimationFrame,
+	setTimeout,
+} from './ponyfill.js'
+
+/** @type {{ (globalThis: any): void }} */
+export const polyfill = (globalThis) => {
+	const apis = {
+		AbortController,
+		AbortSignal,
+		Blob,
+		ByteLengthQueuingStrategy,
+		CountQueuingStrategy,
+		CustomEvent,
+		DOMException,
+		Event,
+		EventTarget,
+		File,
+		FormData,
+		Headers,
+		ReadableByteStreamController,
+		ReadableStream,
+		ReadableStreamBYOBReader,
+		ReadableStreamBYOBRequest,
+		ReadableStreamDefaultController,
+		ReadableStreamDefaultReader,
+		Request,
+		Response,
+		TransformStream,
+		WritableStream,
+		WritableStreamDefaultController,
+		WritableStreamDefaultWriter,
+	
+		cancelAnimationFrame,
+		clearTimeout,
+		fetch,
+		performance,
+		requestAnimationFrame,
+		setTimeout,
+	}
+
+	for (const name in apis) {
+		if (!Reflect.has(globalThis, name)) {
+			Object.defineProperty(globalThis, name, { configurable: true, writable: true, value: apis[name] })
+		}
+	}
+}
