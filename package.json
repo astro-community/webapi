@@ -1,7 +1,7 @@
 {
   "name": "@astropub/webapi",
   "description": "Use Web APIs in Node",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "type": "module",
   "exports": {
     ".": {
@@ -34,6 +34,7 @@
   "bugs": "https://github.com/astro-community/webapi/issues",
   "homepage": "https://github.com/astro-community/webapi#readme",
   "devDependencies": {
+    "@rollup/plugin-alias": "^3.1.8",
     "@rollup/plugin-inject": "^4.0.3",
     "@rollup/plugin-node-resolve": "^13.1.1",
     "@rollup/plugin-typescript": "^8.3.0",
@@ -50,10 +51,7 @@
   "scripts": {
     "build": "node build.js",
     "release": "npm publish --access public",
-    "test": "npm run test:node12 && npm run test:node14 && npm run test:node16",
-    "test:node12": "volta run --node 12 node ./test/index.js",
-    "test:node14": "volta run --node 14 node ./test/index.js",
-    "test:node16": "volta run --node 16 node ./test/index.js"
+    "test": "node test.js"
   },
   "prettier": {
     "semi": false,

@@ -1,7 +1,9 @@
 import { rollup } from 'rollup'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
-import { default as MagicString } from 'magic-string'
+import { posix as path } from 'node:path'
 import { readFile as nodeReadFile, rename, rm, writeFile } from 'node:fs/promises'
+import { default as MagicString } from 'magic-string'
+import { default as alias } from '@rollup/plugin-alias'
 import { default as inject } from '@rollup/plugin-inject'
 import { default as typescript } from '@rollup/plugin-typescript'
 
@@ -9,11 +11,19 @@ const readFileCache = Object.create(null)
 
 const readFile = (/** @type {string} */ id) => readFileCache[id] || (readFileCache[id] = nodeReadFile(id, 'utf8'))
 
-const pathToDOMException = new URL('./src/lib/DOMException.js', import.meta.url).pathname
+const pathToDOMException = path.resolve('src', 'lib', 'DOMException.js')
+const pathToEventTargetShim = path.resolve('node_modules', 'event-target-shim', 'index.mjs')
 
 const plugins = [
 	typescript({
 		tsconfig: './tsconfig.json',
+	}),
+	alias({
+		entries: [
+			{ find: 'event-target-shim', replacement: pathToEventTargetShim },
+			{ find: 'event-target-shim/dist/event-target-shim.js', replacement: pathToEventTargetShim },
+			{ find: 'event-target-shim/dist/event-target-shim.umd.js', replacement: pathToEventTargetShim },
+		],
 	}),
 	nodeResolve({
 		dedupe: [
@@ -28,6 +38,7 @@ const plugins = [
 		'Element': [ './Element', 'Element' ],
 		'Event': [ 'event-target-shim', 'Event' ],
 		'EventTarget': [ 'event-target-shim', 'EventTarget' ],
+		'defineEventAttribute': [ 'event-target-shim', 'defineEventAttribute' ],
 		'HTMLElement': ['./Element', 'HTMLElement'],
 		'HTMLImageElement': ['./Element', 'HTMLImageElement'],
 		'HTMLUnknownElement': ['./Element', 'HTMLUnknownElement'],
