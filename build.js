@@ -1,7 +1,7 @@
 import { rollup } from 'rollup'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import { default as MagicString } from 'magic-string'
-import { readFile as nodeReadFile, rm } from 'node:fs/promises'
+import { readFile as nodeReadFile, rename, rm, writeFile } from 'node:fs/promises'
 import { default as inject } from '@rollup/plugin-inject'
 import { default as typescript } from '@rollup/plugin-typescript'
 
@@ -139,7 +139,6 @@ async function build() {
 
 		// delete the lib directory
 		await rm('lib', { force: true, recursive: true })
-		await rm('polyfill.d.ts', { force: true, recursive: true })
 		await rm('polyfill.d.ts.map', { force: true, recursive: true })
 		await rm('polyfill.js.map', { force: true, recursive: true })
 		await rm('polyfill.js', { force: true, recursive: true })
@@ -147,6 +146,12 @@ async function build() {
 		await rm('ponyfill.d.ts.map', { force: true, recursive: true })
 		await rm('ponyfill.js.map', { force: true, recursive: true })
 		await rm('ponyfill.js', { force: true, recursive: true })
+
+		await rename('polyfill.d.ts', 'mod.d.ts')
+
+		const modDTS = await readFile('./mod.d.ts')
+
+		writeFile('./mod.d.ts', modDTS.replace('\n//# sourceMappingURL=polyfill.d.ts.map', '').replace('ponyfill.js', 'mod.js'))
 	}
 }
 

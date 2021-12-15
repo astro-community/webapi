@@ -1,12 +1,18 @@
 {
   "name": "@astropub/webapi",
   "description": "Use Web APIs in Node",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "exports": {
-    ".": "./mod.js"
+    ".": {
+      "import": "./mod.js",
+      "types": "./mod.d.ts"
+    }
   },
+  "main": "mod.js",
+  "types": "mod.d.ts",
   "files": [
+    "mod.d.ts",
     "mod.js",
     "mod.js.map"
   ],
