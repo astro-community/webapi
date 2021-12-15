@@ -8,6 +8,8 @@ export class DOMException extends Error {
 		this.name = name
 	}
 
+	code!: number
+
 	static INDEX_SIZE_ERR = 1
 	static DOMSTRING_SIZE_ERR = 2
 	static HIERARCHY_REQUEST_ERR = 3

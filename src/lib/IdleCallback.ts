@@ -5,8 +5,7 @@ import { __function_bind, __performance_now } from './utils.js'
 
 const INTERNAL = { tick: 0, pool: new Map }
 
-/** @type {<TArgs extends any[], TFunc extends (...args: TArgs) => any>(callback: TFunc) => number} */
-export function requestAnimationFrame(callback) {
+export function requestIdleCallback<TArgs extends any[], TFunc extends (...args: TArgs) => any>(callback: TFunc): number {
 	if (!INTERNAL.pool.size) {
 		nodeSetTimeout(() => {
 			const next = __performance_now()
@@ -16,7 +15,7 @@ export function requestAnimationFrame(callback) {
 			}
 
 			INTERNAL.pool.clear()
-		}, 16)
+		}, 1000 / 16)
 	}
 
 	const func = __function_bind(callback, undefined)
@@ -27,8 +26,7 @@ export function requestAnimationFrame(callback) {
 	return tick
 }
 
-/** @type {{ (timeoutId: number): void }} */
-export function cancelAnimationFrame(requestId) {
+export function cancelIdleCallback(requestId: number): void {
 	const timeout = INTERNAL.pool.get(requestId)
 
 	if (timeout) {

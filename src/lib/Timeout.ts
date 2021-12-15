@@ -5,8 +5,7 @@ import { __function_bind } from './utils.js'
 
 const INTERNAL = { tick: 0, pool: new Map }
 
-/** @type {<TArgs extends any[], TFunc extends (...args: TArgs) => any>(callback: TFunc, delay?: number, ...args: TArgs) => number} */
-export function setTimeout(callback, delay = 0, ...args) {
+export function setTimeout<TArgs extends any[], TFunc extends (...args: TArgs) => any>(callback: TFunc, delay = 0, ...args: TArgs): number {
 	const func = __function_bind(callback, globalThis)
 	const tick = ++INTERNAL.tick
 	const timeout = nodeSetTimeout(func, delay, ...args)
@@ -16,8 +15,7 @@ export function setTimeout(callback, delay = 0, ...args) {
 	return tick
 }
 
-/** @type {{ (timeoutId: number): void }} */
-export function clearTimeout(timeoutId) {
+export function clearTimeout(timeoutId: number): void {
 	const timeout = INTERNAL.pool.get(timeoutId)
 
 	if (timeout) {

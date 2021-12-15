@@ -1,7 +1,7 @@
 {
   "name": "@astropub/webapi",
   "description": "Use Web APIs in Node",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "exports": {
     ".": "./mod.js"
@@ -31,7 +31,6 @@
     "@rollup/plugin-inject": "^4.0.3",
     "@rollup/plugin-node-resolve": "^13.1.1",
     "@rollup/plugin-typescript": "^8.3.0",
-    "@skypack/package-check": "0.2.2",
     "abort-controller": "^3.0.0",
     "event-target-shim": "^6.0.2",
     "fetch-blob": "^3.1.3",
@@ -45,7 +44,10 @@
   "scripts": {
     "build": "node build.js",
     "release": "npm publish --access public",
-    "test": "package-check"
+    "test": "npm run test:node12 && npm run test:node14 && npm run test:node16",
+    "test:node12": "volta run --node 12 node ./test/index.js",
+    "test:node14": "volta run --node 14 node ./test/index.js",
+    "test:node16": "volta run --node 16 node ./test/index.js"
   },
   "prettier": {
     "semi": false,
@@ -63,5 +65,8 @@
         }
       }
     ]
+  },
+  "volta": {
+    "node": "16.13.1"
   }
 }
