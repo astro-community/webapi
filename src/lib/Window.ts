@@ -1,39 +1,43 @@
-import { INTERNALS_FOR } from './utils'
-
 export class Window extends EventTarget {
-	matchMedia(mediaQueryString: string) {
-		void mediaQueryString
-
-		const mediaQueryList = Object.create(MediaQueryList.prototype)
-
-		return mediaQueryList
-	}
-
-	get customElements() {
-		const _internals = INTERNALS_FOR<WindowInternals>(this)
-
-		return _internals.customElements
-	}
-
-	get document() {
-		const _internals = INTERNALS_FOR<WindowInternals>(this)
-
-		return _internals.document
-	}
-
-	get location() {
-		const _internals = INTERNALS_FOR<WindowInternals>(this)
-
-		return _internals.location
-	}
-
-	get window() {
+	get self(): this {
 		return this
+	}
+
+	get top(): this {
+		return this
+	}
+
+	get window(): this {
+		return this
+	}
+
+	get innerHeight(): number {
+		return 0
+	}
+
+	get innerWidth(): number {
+		return 0
+	}
+
+	get scrollX(): number {
+		return 0
+	}
+
+	get scrollY(): number {
+		return 0
 	}
 }
 
+export const initWindow = (target: Target) => {
+	target.window = target
+}
+
 export interface WindowInternals {
-	customElements: CustomElementRegistry;
-	document: HTMLDocument;
-	location: URL;
+	document: null
+	location: URL
+	window: this
+}
+
+interface Target extends Record<any, any> {
+	window: this
 }

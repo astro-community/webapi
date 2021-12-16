@@ -1,5 +1,3 @@
-// @ts-check
-
 import { setTimeout as nodeSetTimeout, clearTimeout as nodeClearTimeout } from 'node:timers'
 import { __function_bind } from './utils.js'
 

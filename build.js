@@ -150,6 +150,10 @@ async function build() {
 
 		// delete the lib directory
 		await rm('lib', { force: true, recursive: true })
+		await rm('exclusions.d.ts', { force: true, recursive: true })
+		await rm('exclusions.d.ts.map', { force: true, recursive: true })
+		await rm('inheritence.d.ts', { force: true, recursive: true })
+		await rm('inheritence.d.ts.map', { force: true, recursive: true })
 		await rm('polyfill.d.ts.map', { force: true, recursive: true })
 		await rm('polyfill.js.map', { force: true, recursive: true })
 		await rm('polyfill.js', { force: true, recursive: true })

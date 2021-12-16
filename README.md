@@ -134,7 +134,7 @@ polyfill(globalThis, {
 | `Element+`     | `Element`, and exclusions from `HTMLElement+` |
 | `Event+`       | `Event`, `CustomEvent`, `EventTarget`, `AbortSignal`, `MediaQueryList`, `Window`, and exclusions from `Node+` |
 | `EventTarget+` | `Event`, `CustomEvent`, `EventTarget`, `AbortSignal`, `MediaQueryList`, `Window`, and exclusions from `Node+` |
-| `HTMLElement+` | `HTMLElement`, `HTMLDivElement`, `HTMLHeadElement`, `HTMLHtmlElement`, `HTMLImageElement`, `HTMLStyleElement`, `HTMLTemplateElement`, `HTMLUnknownElement` |
+| `HTMLElement+` | `CustomElementsRegistry`, `HTMLElement`, `HTMLDivElement`, `HTMLHeadElement`, `HTMLHtmlElement`, `HTMLImageElement`, `HTMLStyleElement`, `HTMLTemplateElement`, `HTMLUnknownElement`, `Image` |
 | `Node+`        | `Node`, `DocumentFragment`, `ShadowRoot`, `Document`, `HTMLDocument`, and exclusions from `Element+` |
 | `StyleSheet+`  | `StyleSheet`, `CSSStyleSheet` |
 

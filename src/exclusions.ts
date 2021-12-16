@@ -1,6 +1,6 @@
-const exclusionsForHTMLElement = [ 'HTMLElement', 'HTMLDivElement', 'HTMLHeadElement', 'HTMLHtmlElement', 'HTMLImageElement', 'HTMLStyleElement', 'HTMLTemplateElement', 'HTMLUnknownElement' ]
+const exclusionsForHTMLElement = [ 'CustomElementsRegistry', 'HTMLElement', 'HTMLDivElement', 'HTMLHeadElement', 'HTMLHtmlElement', 'HTMLImageElement', 'HTMLStyleElement', 'HTMLTemplateElement', 'HTMLUnknownElement', 'Image' ]
 const exclusionsForElement = [ 'Element', ...exclusionsForHTMLElement ] as const
-const exclusionsForDocument = [ 'Document', 'HTMLDocument' ] as const
+const exclusionsForDocument = [ 'CustomElementsRegistry', 'Document', 'HTMLDocument', 'document', 'customElements' ] as const
 const exclusionsForNode = [ 'Node', 'DocumentFragment', 'ShadowRoot', ...exclusionsForDocument, ...exclusionsForElement ] as const
 const exclusionsForEventTarget = [ 'Event', 'CustomEvent', 'EventTarget', 'AbortSignal', 'MediaQueryList', 'Window', ...exclusionsForNode ] as const
 const exclusionsForEvent = [ 'Event', 'CustomEvent', 'EventTarget', 'AbortSignal', 'MediaQueryList', 'Window', ...exclusionsForNode ] as const

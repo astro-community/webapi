@@ -55,5 +55,25 @@ test(() => {
 				assert.equal(Node.prototype instanceof EventTarget, true)
 			},
 		},
+		{
+			name: 'DOM Methods have no effect',
+			test() {
+				const element = document.createElement('div')
+
+				assert.equal(element.innerHTML, '')
+				element.innerHTML = 'frozen'
+				assert.equal(element.innerHTML, '')
+
+				assert.equal(element.textContent, '')
+				element.textContent = 'frozen'
+				assert.equal(element.textContent, '')
+			},
+		},
+		{
+			name: 'globalThis.window === globalThis',
+			test() {
+				assert.equal(globalThis.window, globalThis)
+			},
+		},
 	]
 })

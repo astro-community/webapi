@@ -1,48 +1,52 @@
-import { INTERNALS_FOR } from './utils'
+import { INTERNALS } from './utils'
 
 export class Element extends Node {
-	hasAttribute(name: string) {
+	hasAttribute(name: string): boolean {
 		void name
 
 		return false
 	}
 
-	getAttribute(name: string) {
+	getAttribute(name: string): string | null {
 		void name
 
 		return null
 	}
 
-	setAttribute(name: string, value: string) {
+	setAttribute(name: string, value: string): void {
 		void name
 		void value
 	}
 
+	removeAttribute(name: string): void {
+		void name
+	}
+
 	attachShadow(init: { mode?: string }) {
-		const internals = INTERNALS_FOR<ElementInternals>(this)
+		const internals: ElementInternals = INTERNALS.get(this)
+
+		if (!internals) throw new TypeError('Can only call Element.attachShadow on instances of Element')
 
 		if (internals.shadowRoot) throw new Error('The operation is not supported.')
 
 		internals.shadowInit = internals.shadowInit || Object(init)
-		internals.shadowRoot = internals.shadowRoot || (/^open$/.test(internals.shadowInit.mode as string) ? new ShadowRoot() as ShadowRoot : null)
+		internals.shadowRoot = internals.shadowRoot || (/^open$/.test(internals.shadowInit.mode as string) ? Object.setPrototypeOf(new EventTarget(), ShadowRoot.prototype) as ShadowRoot : null)
 
 		return internals.shadowRoot
 	}
 
-	get innerHTML() {
-		const internals = INTERNALS_FOR<ElementInternals>(this)
-
-		return internals.innerHTML
+	get innerHTML(): string {
+		return ''
 	}
 
 	set innerHTML(value) {
-		const internals = INTERNALS_FOR<ElementInternals>(this)
-
-		internals.innerHTML = String(value)
+		void value
 	}
 
-	get shadowRoot() {
-		const internals = INTERNALS_FOR<ElementInternals>(this)
+	get shadowRoot(): ShadowRoot | null {
+		const internals: ElementInternals = INTERNALS.get(this)
+
+		if (!internals) throw new TypeError('The Element.shadowRoot getter can only be used on instances of Element')
 
 		internals.shadowInit = internals.shadowInit || {}
 		internals.shadowRoot = internals.shadowRoot || null
@@ -52,20 +56,34 @@ export class Element extends Node {
 		return shadowRootOrNull
 	}
 
-	get nodeName() {
-		const internals = INTERNALS_FOR<ElementInternals>(this)
+	get localName(): string {
+		const internals: ElementInternals = INTERNALS.get(this)
 
-		return internals.name || ''
+		if (!internals) throw new TypeError('The Element.localName getter can only be used on instances of Element')
+
+		return internals.localName
 	}
 
-	get tagName() {
-		const internals = INTERNALS_FOR<ElementInternals>(this)
+	get nodeName(): string {
+		const internals: ElementInternals = INTERNALS.get(this)
 
-		return internals.name || ''
+		if (!internals) throw new TypeError('The Element.nodeName getter can only be used on instances of Element')
+
+		return internals.localName.toUpperCase()
+	}
+
+	get tagName(): string {
+		const internals: ElementInternals = INTERNALS.get(this)
+
+		if (!internals) throw new TypeError('The Element.tagName getter can only be used on instances of Element')
+
+		return internals.localName.toUpperCase()
 	}
 }
 
 export class HTMLElement extends Element {}
+
+export class HTMLBodyElement extends HTMLElement {}
 
 export class HTMLDivElement extends HTMLElement {}
 
@@ -75,15 +93,17 @@ export class HTMLHtmlElement extends HTMLElement {}
 
 export class HTMLImageElement extends HTMLElement {}
 
+export class HTMLSpanElement extends HTMLElement {}
+
 export class HTMLStyleElement extends HTMLElement {}
 
 export class HTMLTemplateElement extends HTMLElement {}
 
 export class HTMLUnknownElement extends HTMLElement {}
 
-interface ElementInternals {
-	name: string;
-	innerHTML: string;
-	shadowRoot: ShadowRoot;
+export interface ElementInternals {
+	attributes: { [name: string]: string }
+	localName: string
+	shadowRoot: ShadowRoot
 	shadowInit: { mode?: string }
 }

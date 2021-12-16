@@ -2,6 +2,7 @@
 
 import { AbortController, AbortSignal } from 'abort-controller/dist/abort-controller.mjs'
 import { requestAnimationFrame, cancelAnimationFrame } from './lib/AnimationFrame'
+import { CharacterData, Comment, Text } from './lib/CharacterData'
 import { File, Blob } from 'fetch-blob/from.js'
 import { CustomEvent } from './lib/CustomEvent.js'
 import { DOMException } from './lib/DOMException'
@@ -13,22 +14,26 @@ import { ByteLengthQueuingStrategy, CountQueuingStrategy, ReadableByteStreamCont
 import { setTimeout, clearTimeout } from './lib/Timeout'
 
 import { CSSStyleSheet, StyleSheet } from './lib/StyleSheet'
-import { CustomElementRegistry } from './lib/CustomElementRegistry'
-import { Document, HTMLDocument } from './lib/Document'
+import { CustomElementRegistry, initCustomElementRegistry } from './lib/CustomElementRegistry'
+import { Document, HTMLDocument, initDocument } from './lib/Document'
 import { DocumentFragment, Node, ShadowRoot } from './lib/Node'
-import { Element, HTMLElement, HTMLDivElement, HTMLHeadElement, HTMLHtmlElement, HTMLImageElement, HTMLStyleElement, HTMLTemplateElement, HTMLUnknownElement } from './lib/Element'
+import { Element, HTMLElement, HTMLBodyElement, HTMLDivElement, HTMLHeadElement, HTMLHtmlElement, HTMLImageElement, HTMLSpanElement, HTMLStyleElement, HTMLTemplateElement, HTMLUnknownElement } from './lib/Element'
 import { Image } from './lib/Image'
 import { IntersectionObserver, MutationObserver, ResizeObserver } from './lib/Observer'
-import { MediaQueryList } from './lib/MediaQueryList'
-import { Window } from './lib/Window'
+import { MediaQueryList, initMediaQueryList } from './lib/MediaQueryList'
+import { Window, initWindow } from './lib/Window'
+
+import { alert } from './lib/Alert'
 
 export {
 	AbortController,
 	AbortSignal,
 	Blob,
 	ByteLengthQueuingStrategy,
-	CSSStyleSheet,
+	CharacterData,
+	Comment,
 	CountQueuingStrategy,
+	CSSStyleSheet,
 	CustomElementRegistry,
 	CustomEvent,
 	DOMException,
@@ -41,10 +46,12 @@ export {
 	FormData,
 	HTMLDocument,
 	HTMLElement,
+	HTMLBodyElement,
 	HTMLDivElement,
 	HTMLHeadElement,
 	HTMLHtmlElement,
 	HTMLImageElement,
+	HTMLSpanElement,
 	HTMLStyleElement,
 	HTMLTemplateElement,
 	HTMLUnknownElement,
@@ -64,11 +71,14 @@ export {
 	Response,
 	ShadowRoot,
 	StyleSheet,
+	Text,
 	TransformStream,
 	WritableStream,
 	WritableStreamDefaultController,
 	WritableStreamDefaultWriter,
 	Window,
+
+	alert,
 	cancelAnimationFrame,
 	cancelIdleCallback,
 	clearTimeout,
@@ -76,4 +86,9 @@ export {
 	requestAnimationFrame,
 	requestIdleCallback,
 	setTimeout,
+
+	initCustomElementRegistry,
+	initDocument,
+	initMediaQueryList,
+	initWindow,
 }

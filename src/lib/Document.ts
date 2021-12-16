@@ -1,16 +1,26 @@
-import { INTERNALS_FOR } from './utils'
+import { INTERNALS } from './utils'
 
 export class Document extends Node {
 	createElement(name: string) {
-		name = String(name).toUpperCase()
+		const internal: DocumentInternals = INTERNALS.get(this)
 
-		const internals = INTERNALS_FOR<ElementRegistryInternals>(this.defaultView.customElements)
+		if (!internal) throw new TypeError('Can only call Document.createElement on instances of Document')
 
-		const TypeOfHTMLElement = internals.constructorByName.get(name) || HTMLUnknownElement
+		const customElementInternals: CustomElementRegistryInternals = INTERNALS.get(internal.target.customElements)
 
-		const element: HTMLElement = Object.create(TypeOfHTMLElement.prototype)
+		name = String(name).toLowerCase()
 
-		Object.assign(INTERNALS_FOR(element), { name, ownerDocument: this })
+		const TypeOfHTMLElement = internal.constructorByName.get(name) || (customElementInternals && customElementInternals.constructorByName.get(name)) || HTMLUnknownElement
+
+		const element = Object.setPrototypeOf(new EventTarget(), TypeOfHTMLElement.prototype) as HTMLElement
+
+		INTERNALS.set(element, {
+			attributes: {},
+			localName: name,
+			ownerDocument: this,
+			shadowInit: null as unknown as ShadowRootInit,
+			shadowRoot: null as unknown as ShadowRoot,
+		} as ElementInternals)
 
 		return element
 	}
@@ -19,51 +29,87 @@ export class Document extends Node {
 		return []
 	}
 
-	get body() {
-		const internals = INTERNALS_FOR<DocumentInternals>(this)
-
-		return internals.body || null
-	}
-
-	get defaultView() {
-		const internals = INTERNALS_FOR<DocumentInternals>(this)
-
-		return internals.defaultView || null
-	}
-
-	get documentElement() {
-		const internals = INTERNALS_FOR<DocumentInternals>(this)
-
-		return internals.documentElement || null
-	}
-
-	get head() {
-		const internals = INTERNALS_FOR<DocumentInternals>(this)
-
-		return internals.head || null
-	}
-
 	get styleSheets(): StyleSheet[] {
 		return []
 	}
+
+	body!: HTMLBodyElement
+	documentElement!: HTMLHtmlElement
+	head!: HTMLHeadElement
 }
 
 export class HTMLDocument extends Document {}
 
+export const initDocument = (target: Target) => {
+	const document: HTMLDocument = target.document = Object.setPrototypeOf(new EventTarget(), HTMLDocument.prototype)
+
+	INTERNALS.set(document, {
+		target,
+		constructorByName: new Map<string, Function>([
+			['body', target.HTMLBodyElement],
+			['div', target.HTMLDivElement],
+			['head', target.HTMLHeadElement],
+			['html', target.HTMLHtmlElement],
+			['img', target.HTMLImageElement],
+			['span', target.HTMLSpanElement],
+			['style', target.HTMLStyleElement],
+		]),
+		nameByConstructor: new Map,
+	} as DocumentInternals)
+
+	const initElement = (name: string, Class: Function) => {
+		const target = Object.setPrototypeOf(new EventTarget(), Class.prototype)
+
+		INTERNALS.set(target, {
+			attributes: {},
+			localName: name,
+			ownerDocument: document,
+			shadowRoot: null as unknown as ShadowRoot,
+			shadowInit: null as unknown as ShadowRootInit,
+		} as ElementInternals)
+
+		return target
+	}
+
+	document.body = initElement('body', target.HTMLBodyElement) as HTMLBodyElement
+	document.head = initElement('head', target.HTMLHeadElement) as HTMLHeadElement
+	document.documentElement = initElement('html', target.HTMLHtmlElement) as HTMLHtmlElement
+}
+
 interface DocumentInternals {
-	body: HTMLElement;
-	defaultView: WindowInternals;
-	documentElement: HTMLHtmlElement;
-	head: HTMLHeadElement;
+	body: HTMLBodyElement
+	documentElement: HTMLHtmlElement
+	head: HTMLHeadElement
+	constructorByName: Map<string, Function>
+	nameByConstructor: Map<Function, string>
+	target: Target
 }
 
-interface ElementRegistryInternals {
-	constructorByName: Map<string, typeof HTMLElement>;
-	nameByConstructor: Map<typeof HTMLElement, string>;
+interface CustomElementRegistryInternals {
+	constructorByName: Map<string, Function>
+	nameByConstructor: Map<Function, string>
 }
 
-interface WindowInternals {
-	customElements: CustomElementRegistry;
-	document: HTMLDocument;
-	location: URL;
+interface ElementInternals {
+	attributes: { [name: string]: string },
+	localName: string
+	ownerDocument: Document
+	shadowRoot: ShadowRoot
+	shadowInit: ShadowRootInit
+}
+
+interface ShadowRootInit extends Record<any, any> {
+	mode?: string
+}
+
+interface Target extends Record<any, any> {
+	HTMLBodyElement: typeof HTMLBodyElement
+	HTMLDivElement: typeof HTMLDivElement
+	HTMLElement: typeof HTMLElement
+	HTMLHeadElement: typeof HTMLHeadElement
+	HTMLHtmlElement: typeof HTMLHtmlElement
+	HTMLSpanElement: typeof HTMLSpanElement
+	HTMLStyleElement: typeof HTMLStyleElement
+	customElements: CustomElementRegistry
+	document: DocumentInternals
 }

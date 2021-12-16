@@ -1,5 +1,3 @@
-// @ts-check
-
 export class DOMException extends Error {
 	constructor(message = '', name = 'Error') {
 		super(message)

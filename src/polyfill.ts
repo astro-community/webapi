@@ -3,8 +3,10 @@ import {
 	AbortSignal,
 	Blob,
 	ByteLengthQueuingStrategy,
-	CSSStyleSheet,
+	CharacterData,
+	Comment,
 	CountQueuingStrategy,
+	CSSStyleSheet,
 	CustomElementRegistry,
 	CustomEvent,
 	DOMException,
@@ -17,10 +19,12 @@ import {
 	FormData,
 	HTMLDocument,
 	HTMLElement,
+	HTMLBodyElement,
 	HTMLDivElement,
 	HTMLHeadElement,
 	HTMLHtmlElement,
 	HTMLImageElement,
+	HTMLSpanElement,
 	HTMLStyleElement,
 	HTMLTemplateElement,
 	HTMLUnknownElement,
@@ -40,11 +44,14 @@ import {
 	Response,
 	ShadowRoot,
 	StyleSheet,
+	Text,
 	TransformStream,
 	WritableStream,
 	WritableStreamDefaultController,
 	WritableStreamDefaultWriter,
 	Window,
+
+	alert,
 	cancelAnimationFrame,
 	cancelIdleCallback,
 	clearTimeout,
@@ -52,6 +59,11 @@ import {
 	requestAnimationFrame,
 	requestIdleCallback,
 	setTimeout,
+
+	initCustomElementRegistry,
+	initDocument,
+	initMediaQueryList,
+	initWindow,
 } from './ponyfill'
 
 import { exclusions } from './exclusions'
@@ -62,8 +74,10 @@ export {
 	AbortSignal,
 	Blob,
 	ByteLengthQueuingStrategy,
-	CSSStyleSheet,
+	CharacterData,
+	Comment,
 	CountQueuingStrategy,
+	CSSStyleSheet,
 	CustomElementRegistry,
 	CustomEvent,
 	DOMException,
@@ -76,10 +90,12 @@ export {
 	FormData,
 	HTMLDocument,
 	HTMLElement,
+	HTMLBodyElement,
 	HTMLDivElement,
 	HTMLHeadElement,
 	HTMLHtmlElement,
 	HTMLImageElement,
+	HTMLSpanElement,
 	HTMLStyleElement,
 	HTMLTemplateElement,
 	HTMLUnknownElement,
@@ -99,11 +115,14 @@ export {
 	Response,
 	ShadowRoot,
 	StyleSheet,
+	Text,
 	TransformStream,
 	WritableStream,
 	WritableStreamDefaultController,
 	WritableStreamDefaultWriter,
 	Window,
+
+	alert,
 	cancelAnimationFrame,
 	cancelIdleCallback,
 	clearTimeout,
@@ -119,13 +138,15 @@ export const polyfill = (target: any, options?: PolyfillOptions) => {
 		AbortSignal,
 		Blob,
 		ByteLengthQueuingStrategy,
-		CSSStyleSheet,
+		CharacterData,
+		Comment,
 		CountQueuingStrategy,
+		CSSStyleSheet,
 		CustomElementRegistry,
 		CustomEvent,
-		DOMException,
 		Document,
 		DocumentFragment,
+		DOMException,
 		Element,
 		Event,
 		EventTarget,
@@ -133,10 +154,12 @@ export const polyfill = (target: any, options?: PolyfillOptions) => {
 		FormData,
 		HTMLDocument,
 		HTMLElement,
+		HTMLBodyElement,
 		HTMLDivElement,
 		HTMLHeadElement,
 		HTMLHtmlElement,
 		HTMLImageElement,
+		HTMLSpanElement,
 		HTMLStyleElement,
 		HTMLTemplateElement,
 		HTMLUnknownElement,
@@ -156,11 +179,14 @@ export const polyfill = (target: any, options?: PolyfillOptions) => {
 		Response,
 		ShadowRoot,
 		StyleSheet,
+		Text,
 		TransformStream,
 		WritableStream,
 		WritableStreamDefaultController,
 		WritableStreamDefaultWriter,
 		Window,
+
+		alert,
 		cancelAnimationFrame,
 		cancelIdleCallback,
 		clearTimeout,
@@ -222,6 +248,22 @@ export const polyfill = (target: any, options?: PolyfillOptions) => {
 
 		// define WebAPIs inheritence
 		Object.setPrototypeOf(Class.prototype, Super.prototype)
+	}
+
+	if (!excludeOptions.has('HTMLDocument') && !excludeOptions.has('HTMLElement')) {
+		initDocument(target)
+
+		if (!excludeOptions.has('CustomElementRegistry')) {
+			initCustomElementRegistry(target)
+		}
+	}
+
+	if (!excludeOptions.has('MediaQueryList')) {
+		initMediaQueryList(target)
+	}
+
+	if (!excludeOptions.has('Window')) {
+		initWindow(target)
 	}
 }
 

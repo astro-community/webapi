@@ -1,5 +1,3 @@
-// @ts-check
-
 import { performance } from 'node:perf_hooks'
 
 export const __date_now = Date.now
@@ -13,5 +11,3 @@ export const __object_create = Object.create as <T extends any = any>(value: T) 
 export const __performance_now = performance.now as () => number
 
 export const INTERNALS = new WeakMap()
-
-export const INTERNALS_FOR = <T>(ref: any): T => INTERNALS.has(ref) ? INTERNALS.get(ref) : INTERNALS.set(ref, {}).get(ref)
