@@ -28,7 +28,9 @@ export class Window extends EventTarget {
 	}
 }
 
-export const initWindow = (target: Target) => {
+export const initWindow = (target: Target, exclude: Set<string>) => {
+	if (exclude.has('window')) return
+
 	target.window = target
 }
 

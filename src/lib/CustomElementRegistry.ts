@@ -52,7 +52,9 @@ interface ElementDefinitionOptions {
 	extends?: string | undefined;
 }
 
-export const initCustomElementRegistry = (target: Record<any, any>) => {
+export const initCustomElementRegistry = (target: Record<any, any>, exclude: Set<string>) => {
+	if (exclude.has('customElements')) return
+
 	const customElements: CustomElementRegistry = target.customElements = Object.create(CustomElementRegistry.prototype)
 
 	INTERNALS.set(customElements, {

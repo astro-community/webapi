@@ -40,7 +40,9 @@ export class Document extends Node {
 
 export class HTMLDocument extends Document {}
 
-export const initDocument = (target: Target) => {
+export const initDocument = (target: Target, exclude: Set<string>) => {
+	if (exclude.has('document')) return
+
 	const document: HTMLDocument = target.document = Object.setPrototypeOf(new EventTarget(), HTMLDocument.prototype)
 
 	INTERNALS.set(document, {

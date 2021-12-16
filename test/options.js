@@ -35,5 +35,19 @@ test(() => {
 				assert.equal(Reflect.has(target, 'HTMLDivElement'), false)
 			},
 		},
+		{
+			name: 'Can exclude document',
+			test() {
+				const target = {}
+	
+				polyfill(target, {
+					exclude: 'document'
+				})
+	
+				assert.equal(Reflect.has(target, 'Document'), true)
+				assert.equal(Reflect.has(target, 'HTMLDocument'), true)
+				assert.equal(Reflect.has(target, 'document'), false)
+			},
+		},
 	]
 })

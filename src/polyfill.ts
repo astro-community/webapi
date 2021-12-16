@@ -251,19 +251,19 @@ export const polyfill = (target: any, options?: PolyfillOptions) => {
 	}
 
 	if (!excludeOptions.has('HTMLDocument') && !excludeOptions.has('HTMLElement')) {
-		initDocument(target)
+		initDocument(target, excludeOptions)
 
 		if (!excludeOptions.has('CustomElementRegistry')) {
-			initCustomElementRegistry(target)
+			initCustomElementRegistry(target, excludeOptions)
 		}
 	}
 
 	if (!excludeOptions.has('MediaQueryList')) {
-		initMediaQueryList(target)
+		initMediaQueryList(target, excludeOptions)
 	}
 
 	if (!excludeOptions.has('Window')) {
-		initWindow(target)
+		initWindow(target, excludeOptions)
 	}
 }
 
