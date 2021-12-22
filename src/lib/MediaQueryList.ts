@@ -1,20 +1,12 @@
-import { INTERNALS } from './utils'
+import { INTERNALS, internalsOf } from './utils'
 
 export class MediaQueryList extends EventTarget {
 	get matches(): boolean {
-		const internals: MediaQueryListInternals = INTERNALS.get(this)
-
-		if (!internals) throw new TypeError('The MediaQueryList.media getter can only be used on instances of MediaQueryList')
-
-		return internals.matches
+		return internalsOf(this, 'MediaQueryList', 'matches').matches
 	}
 
 	get media(): string {
-		const internals: MediaQueryListInternals = INTERNALS.get(this)
-
-		if (!internals) throw new TypeError('The MediaQueryList.media getter can only be used on instances of MediaQueryList')
-
-		return internals.media
+		return internalsOf(this, 'MediaQueryList', 'media').media
 	}
 }
 
@@ -27,15 +19,10 @@ export const initMediaQueryList = (target: Target, exclude: Set<string>) => {
 		INTERNALS.set(mql, {
 			matches: false,
 			media,
-		} as MediaQueryListInternals)
+		})
 
 		return mql
 	}
-}
-
-interface MediaQueryListInternals {
-	matches: boolean
-	media: string
 }
 
 interface Target extends Record<any, any> {

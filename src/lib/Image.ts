@@ -1,5 +1,5 @@
 import { INTERNALS } from './utils'
-import { HTMLImageElement, ElementInternals } from './Element'
+import { HTMLImageElement } from './HTMLImageElement'
 
 export function Image() {
 	// @ts-ignore
@@ -9,7 +9,7 @@ export function Image() {
 		innerHTML: '',
 		shadowRoot: null,
 		shadowInit: null,
-	} as ElementInternals)
+	})
 }
 
 Image.prototype = HTMLImageElement.prototype

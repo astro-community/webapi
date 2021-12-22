@@ -1,4 +1,4 @@
-import { assert, test } from './_setup.js'
+import { assert, test } from '../run/test.setup.js'
 import { polyfill } from '../mod.js'
 
 test(() => {

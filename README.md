@@ -41,6 +41,8 @@ These APIs are combined from popular open source projects and configured to shar
 - [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData)
 - [HTMLDocument](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument)
 - [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement)
+- [HTMLBodyElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement)
+- [HTMLCanvasElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement)
 - [HTMLDivElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement)
 - [HTMLHeadElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLHeadElement)
 - [HTMLHtmlElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLHtmlElement)
@@ -134,7 +136,7 @@ polyfill(globalThis, {
 | `Element+`     | `Element`, and exclusions from `HTMLElement+` |
 | `Event+`       | `Event`, `CustomEvent`, `EventTarget`, `AbortSignal`, `MediaQueryList`, `Window`, and exclusions from `Node+` |
 | `EventTarget+` | `Event`, `CustomEvent`, `EventTarget`, `AbortSignal`, `MediaQueryList`, `Window`, and exclusions from `Node+` |
-| `HTMLElement+` | `CustomElementsRegistry`, `HTMLElement`, `HTMLDivElement`, `HTMLHeadElement`, `HTMLHtmlElement`, `HTMLImageElement`, `HTMLStyleElement`, `HTMLTemplateElement`, `HTMLUnknownElement`, `Image` |
+| `HTMLElement+` | `CustomElementsRegistry`, `HTMLElement`, `HTMLBodyElement`, `HTMLCanvasElement`, `HTMLDivElement`, `HTMLHeadElement`, `HTMLHtmlElement`, `HTMLImageElement`, `HTMLStyleElement`, `HTMLTemplateElement`, `HTMLUnknownElement`, `Image` |
 | `Node+`        | `Node`, `DocumentFragment`, `ShadowRoot`, `Document`, `HTMLDocument`, and exclusions from `Element+` |
 | `StyleSheet+`  | `StyleSheet`, `CSSStyleSheet` |
 
@@ -146,14 +148,14 @@ polyfill(globalThis, {
 
 Code original to this project is licensed under the CC0-1.0 License.
 
-Code from [abort-controller](https://www.npmjs.com/package/abort-controller) is licensed under the The MIT License (MIT), Copyright Toru Nagashima.
+Code from [abort-controller](https://www.npmjs.com/package/abort-controller) is licensed under the MIT License (MIT), Copyright Toru Nagashima.
 
-Code from [event-target-shim](https://www.npmjs.com/package/event-target-shim) is licensed under the The MIT License (MIT), Copyright Toru Nagashima.
+Code from [event-target-shim](https://www.npmjs.com/package/event-target-shim) is licensed under the MIT License (MIT), Copyright Toru Nagashima.
 
-Code from [fetch-blob](https://www.npmjs.com/package/fetch-blob) is licensed under the The MIT License (MIT), Copyright David Frank.
+Code from [fetch-blob](https://www.npmjs.com/package/fetch-blob) is licensed under the MIT License (MIT), Copyright Jimmy Wärting.
 
-Code from [formdata-polyfill](https://www.npmjs.com/package/formdata-polyfill) is licensed under the The MIT License (MIT), Copyright Jimmy Karl Roland Wärting.
+Code from [formdata-polyfill](https://www.npmjs.com/package/formdata-polyfill) is licensed under the MIT License (MIT), Copyright Jimmy Wärting.
 
-Code from [node-fetch](https://www.npmjs.com/package/node-fetch) is licensed under the The MIT License (MIT), Copyright Node Fetch Team.
+Code from [node-fetch](https://www.npmjs.com/package/node-fetch) is licensed under the MIT License (MIT), Copyright Node Fetch Team.
 
-Code from [web-streams-polyfill](https://www.npmjs.com/package/web-streams-polyfill) is licensed under the The MIT License (MIT), Copyright Mattias Buelens, Diwank Singh Tomer.
+Code from [web-streams-polyfill](https://www.npmjs.com/package/web-streams-polyfill) is licensed under the MIT License (MIT), Copyright Mattias Buelens and Diwank Singh Tomer.

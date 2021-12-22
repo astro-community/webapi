@@ -1,4 +1,4 @@
-import { INTERNALS } from './utils'
+import { INTERNALS, internalsOf } from './utils'
 
 export class CustomElementRegistry {
 	constructor() {
@@ -7,9 +7,7 @@ export class CustomElementRegistry {
 
 	/** Defines a new custom element using the given tag name and HTMLElement constructor. */
 	define(name: string, constructor: Function, options?: ElementDefinitionOptions) {
-		const internals: CustomElementRegistryInternals = INTERNALS.get(this)
-
-		if (!internals) throw new TypeError('Can only call CustomElementRegistry.define on instances of CustomElementRegistry')
+		const internals = internalsOf<CustomElementRegistryInternals>(this, 'CustomElementRegistry', 'define')
 
 		name = String(name)
 
@@ -25,9 +23,7 @@ export class CustomElementRegistry {
 
 	/** Returns the constructor associated with the given tag name. */
 	get(name: string) {
-		const internals: CustomElementRegistryInternals = INTERNALS.get(this)
-
-		if (!internals) throw new TypeError('Can only call CustomElementRegistry.get on instances of CustomElementRegistry')
+		const internals = internalsOf<CustomElementRegistryInternals>(this, 'CustomElementRegistry', 'get')
 
 		name = String(name).toLowerCase()
 
@@ -35,9 +31,7 @@ export class CustomElementRegistry {
 	}
 
 	getName(constructor: Function) {
-		const internals: CustomElementRegistryInternals = INTERNALS.get(this)
-
-		if (!internals) throw new TypeError('Can only call CustomElementRegistry.getName on instances of CustomElementRegistry')
+		const internals = internalsOf<CustomElementRegistryInternals>(this, 'CustomElementRegistry', 'getName')
 
 		return internals.nameByConstructor.get(constructor)
 	}

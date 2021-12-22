@@ -8,7 +8,7 @@ import { CustomEvent } from './lib/CustomEvent.js'
 import { DOMException } from './lib/DOMException'
 import { cancelIdleCallback, requestIdleCallback } from './lib/IdleCallback'
 import { Event, EventTarget } from 'event-target-shim'
-import { default as fetch, Headers, Request, Response } from 'node-fetch/src/index.js'
+import { fetch, Headers, Request, Response } from './lib/fetch'
 import { FormData } from 'formdata-polyfill/esm.min.js'
 import { ByteLengthQueuingStrategy, CountQueuingStrategy, ReadableByteStreamController, ReadableStream, ReadableStreamBYOBReader, ReadableStreamBYOBRequest, ReadableStreamDefaultController, ReadableStreamDefaultReader, TransformStream, WritableStream, WritableStreamDefaultController, WritableStreamDefaultWriter } from 'web-streams-polyfill/dist/ponyfill.es6.mjs'
 import { setTimeout, clearTimeout } from './lib/Timeout'
@@ -17,7 +17,9 @@ import { CSSStyleSheet, StyleSheet } from './lib/StyleSheet'
 import { CustomElementRegistry, initCustomElementRegistry } from './lib/CustomElementRegistry'
 import { Document, HTMLDocument, initDocument } from './lib/Document'
 import { DocumentFragment, Node, ShadowRoot } from './lib/Node'
-import { Element, HTMLElement, HTMLBodyElement, HTMLDivElement, HTMLHeadElement, HTMLHtmlElement, HTMLImageElement, HTMLSpanElement, HTMLStyleElement, HTMLTemplateElement, HTMLUnknownElement } from './lib/Element'
+import { Element, HTMLElement, HTMLBodyElement, HTMLDivElement, HTMLHeadElement, HTMLHtmlElement, HTMLSpanElement, HTMLStyleElement, HTMLTemplateElement, HTMLUnknownElement } from './lib/Element'
+import { HTMLImageElement } from './lib/HTMLImageElement'
+import { HTMLCanvasElement } from './lib/HTMLCanvasElement'
 import { Image } from './lib/Image'
 import { IntersectionObserver, MutationObserver, ResizeObserver } from './lib/Observer'
 import { MediaQueryList, initMediaQueryList } from './lib/MediaQueryList'
@@ -44,10 +46,12 @@ export {
 	EventTarget,
 	File,
 	FormData,
+	Headers,
+	HTMLBodyElement,
+	HTMLCanvasElement,
+	HTMLDivElement,
 	HTMLDocument,
 	HTMLElement,
-	HTMLBodyElement,
-	HTMLDivElement,
 	HTMLHeadElement,
 	HTMLHtmlElement,
 	HTMLImageElement,
@@ -55,9 +59,8 @@ export {
 	HTMLStyleElement,
 	HTMLTemplateElement,
 	HTMLUnknownElement,
-	Headers,
-	IntersectionObserver,
 	Image,
+	IntersectionObserver,
 	MediaQueryList,
 	MutationObserver,
 	Node,
@@ -68,6 +71,7 @@ export {
 	ReadableStreamDefaultController,
 	ReadableStreamDefaultReader,
 	Request,
+	ResizeObserver,
 	Response,
 	ShadowRoot,
 	StyleSheet,

@@ -11,3 +11,11 @@ export const __object_create = Object.create as <T extends any = any>(value: T) 
 export const __performance_now = performance.now as () => number
 
 export const INTERNALS = new WeakMap()
+
+export const internalsOf = <T extends object>(target: T | object, className: string, propName: string): T => {
+	const internals: T = INTERNALS.get(target)
+
+	if (!internals) throw new TypeError(`${className}.${propName} can only be used on instances of ${className}`)
+
+	return internals
+}

@@ -1,4 +1,4 @@
-import { INTERNALS } from './utils'
+import { internalsOf } from './utils'
 
 export class Element extends Node {
 	hasAttribute(name: string): boolean {
@@ -22,62 +22,55 @@ export class Element extends Node {
 		void name
 	}
 
-	attachShadow(init: { mode?: string }) {
-		const internals: ElementInternals = INTERNALS.get(this)
+	attachShadow(init: Partial<ShadowRootInit>) {
+		if (arguments.length < 1) throw new TypeError(`Failed to execute 'attachShadow' on 'Element': 1 argument required, but only 0 present.`)
 
-		if (!internals) throw new TypeError('Can only call Element.attachShadow on instances of Element')
+		if (init !== Object(init)) throw new TypeError(`Failed to execute 'attachShadow' on 'Element': The provided value is not of type 'ShadowRootInit'.`)
+
+		if (init.mode !== 'open' && init.mode !== 'closed') throw new TypeError(`Failed to execute 'attachShadow' on 'Element': Failed to read the 'mode' property from 'ShadowRootInit': The provided value '${init.mode}' is not a valid enum value of type ShadowRootMode.`)
+
+		const internals = internalsOf<ElementInternals>(this, 'Element', 'attachShadow')
 
 		if (internals.shadowRoot) throw new Error('The operation is not supported.')
 
-		internals.shadowInit = internals.shadowInit || Object(init)
+		internals.shadowInit = internals.shadowInit || {
+			mode: init.mode,
+			delegatesFocus: Boolean(init.delegatesFocus),
+		}
+
 		internals.shadowRoot = internals.shadowRoot || (/^open$/.test(internals.shadowInit.mode as string) ? Object.setPrototypeOf(new EventTarget(), ShadowRoot.prototype) as ShadowRoot : null)
 
 		return internals.shadowRoot
 	}
 
 	get innerHTML(): string {
+		internalsOf<ElementInternals>(this, 'Element', 'innerHTML')
+
 		return ''
 	}
 
 	set innerHTML(value) {
+		internalsOf<ElementInternals>(this, 'Element', 'innerHTML')
+
 		void value
 	}
 
 	get shadowRoot(): ShadowRoot | null {
-		const internals: ElementInternals = INTERNALS.get(this)
+		const internals = internalsOf<ElementInternals>(this, 'Element', 'shadowRoot')
 
-		if (!internals) throw new TypeError('The Element.shadowRoot getter can only be used on instances of Element')
-
-		internals.shadowInit = internals.shadowInit || {}
-		internals.shadowRoot = internals.shadowRoot || null
-
-		const shadowRootOrNull = /^open$/.test(internals.shadowInit.mode as string) ? internals.shadowRoot : null
-
-		return shadowRootOrNull
+		return Object(internals.shadowInit).mode === 'open' ? internals.shadowRoot : null
 	}
 
 	get localName(): string {
-		const internals: ElementInternals = INTERNALS.get(this)
-
-		if (!internals) throw new TypeError('The Element.localName getter can only be used on instances of Element')
-
-		return internals.localName
+		return internalsOf<ElementInternals>(this, 'Element', 'localName').localName
 	}
 
 	get nodeName(): string {
-		const internals: ElementInternals = INTERNALS.get(this)
-
-		if (!internals) throw new TypeError('The Element.nodeName getter can only be used on instances of Element')
-
-		return internals.localName.toUpperCase()
+		return internalsOf<ElementInternals>(this, 'Element', 'nodeName').localName.toUpperCase()
 	}
 
 	get tagName(): string {
-		const internals: ElementInternals = INTERNALS.get(this)
-
-		if (!internals) throw new TypeError('The Element.tagName getter can only be used on instances of Element')
-
-		return internals.localName.toUpperCase()
+		return internalsOf<ElementInternals>(this, 'Element', 'tagName').localName.toUpperCase()
 	}
 }
 
@@ -91,8 +84,6 @@ export class HTMLHeadElement extends HTMLElement {}
 
 export class HTMLHtmlElement extends HTMLElement {}
 
-export class HTMLImageElement extends HTMLElement {}
-
 export class HTMLSpanElement extends HTMLElement {}
 
 export class HTMLStyleElement extends HTMLElement {}
@@ -102,8 +93,12 @@ export class HTMLTemplateElement extends HTMLElement {}
 export class HTMLUnknownElement extends HTMLElement {}
 
 export interface ElementInternals {
-	attributes: { [name: string]: string }
 	localName: string
-	shadowRoot: ShadowRoot
-	shadowInit: { mode?: string }
+	shadowRoot: ShadowRoot | null
+	shadowInit: ShadowRootInit
+}
+
+export interface ShadowRootInit {
+	mode: 'open' | 'closed'
+	delegatesFocus: boolean
 }

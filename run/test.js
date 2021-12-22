@@ -1,7 +1,7 @@
-import { pathFrom, spawn } from './test/_setup.js'
+import { pathFrom, spawn } from './test.setup.js'
 
-const pathToRoot = pathFrom(import.meta.url, './')
-const pathToTest = pathFrom(import.meta.url, './test/', './_test.js')
+const pathToRoot = pathFrom(import.meta.url, '../')
+const pathToTest = pathFrom(import.meta.url, './test.all.js')
 
 const test = async () => {
 	await spawn('volta', ['run', '--node', '12', 'node', pathToTest], { cwd: pathToRoot, env: { ...process.env }, stdio: 'inherit' })

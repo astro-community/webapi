@@ -1,7 +1,7 @@
 {
   "name": "@astropub/webapi",
   "description": "Use Web APIs in Node",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "type": "module",
   "exports": {
     ".": {
@@ -28,9 +28,17 @@
     "setInterval",
     "web"
   ],
-  "license": "CC0-1.0",
+  "license": "(CC0-1.0 AND MIT)",
   "repository": "astro-community/webapi",
   "author": "Jonathan Neal <jonathantneal@hotmail.com>",
+  "contributors": [
+    "Jonathan Neal (https://github.com/jonathantneal)",
+    "Toru Nagashima (https://github.com/mysticatea)",
+    "Jimmy Wärting (https://github.com/jimmywarting)",
+    "David Frank (https://github.com/bitinn)",
+    "Mattias Buelens (https://github.com/MattiasBuelens)",
+    "Diwank Singh (https://github.com/creatorrr)"
+  ],
   "bugs": "https://github.com/astro-community/webapi/issues",
   "homepage": "https://github.com/astro-community/webapi#readme",
   "devDependencies": {
@@ -49,9 +57,9 @@
     "web-streams-polyfill": "^3.2.0"
   },
   "scripts": {
-    "build": "node build.js",
+    "build": "node run/build.js",
     "release": "npm publish --access public",
-    "test": "node test.js"
+    "test": "node run/test.js"
   },
   "prettier": {
     "semi": false,
@@ -71,6 +79,7 @@
     ]
   },
   "volta": {
-    "node": "16.13.1"
+    "node": "16.13.1",
+    "npm": "8.3.0"
   }
 }

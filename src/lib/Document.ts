@@ -1,10 +1,8 @@
-import { INTERNALS } from './utils'
+import { INTERNALS, internalsOf } from './utils'
 
 export class Document extends Node {
 	createElement(name: string) {
-		const internal: DocumentInternals = INTERNALS.get(this)
-
-		if (!internal) throw new TypeError('Can only call Document.createElement on instances of Document')
+		const internal = internalsOf<DocumentInternals>(this, 'Document', 'createElement')
 
 		const customElementInternals: CustomElementRegistryInternals = INTERNALS.get(internal.target.customElements)
 
@@ -49,6 +47,7 @@ export const initDocument = (target: Target, exclude: Set<string>) => {
 		target,
 		constructorByName: new Map<string, Function>([
 			['body', target.HTMLBodyElement],
+			['canvas', target.HTMLCanvasElement],
 			['div', target.HTMLDivElement],
 			['head', target.HTMLHeadElement],
 			['html', target.HTMLHtmlElement],
