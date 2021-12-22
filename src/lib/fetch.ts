@@ -6,7 +6,7 @@ export { Headers, Request, Response }
 export const fetch = (resource: string | URL | Request, init?: Partial<FetchInit>): Promise<Response> => {
 	const currentURL = new URL(
 		(
-			(String(Error().stack).split(/\n+/).slice(2).join('\n') as unknown as string).match(/file:[^:]+/) || [import.meta.url]
+			String(Error().stack).split(import.meta.url).slice(1).join(import.meta.url).match(/(?<= \()[\w-]+:[^:)]+/) || [import.meta.url]
 		)[0]
 	)
 
