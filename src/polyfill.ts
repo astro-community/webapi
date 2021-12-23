@@ -215,21 +215,21 @@ export const polyfill = (target: any, options?: PolyfillOptions) => {
 	) as Set<string>
 
 	// expand exclude options using exclusion shorthands
-	for (const excludeOption of excludeOptions) {
+	excludeOptions.forEach(function(excludeOption){
 		if (excludeOption in exclusions) {
 			for (const exclusion of exclusions[excludeOption as keyof typeof exclusions]) {
 				excludeOptions.add(exclusion)
 			}
 		}
-	}
+	});
 
 	// apply each WebAPI
 	for (const name of Object.keys(webAPIs)) {
 		// skip WebAPIs that are excluded
 		if (excludeOptions.has(name)) continue
 
-		// skip WebAPIs that are built-in 
-		if (Reflect.has(target, name)) continue
+		// skip WebAPIs that are available globally (supporting WebContainers)
+		if (Object.prototype.hasOwnProperty.call(target, name)) continue
 
 		// define WebAPIs on the target
 		Object.defineProperty(target, name, { configurable: true, enumerable: true, writable: true, value: webAPIs[name as keyof typeof webAPIs] })
