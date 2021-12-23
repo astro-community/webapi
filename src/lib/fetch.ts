@@ -13,9 +13,11 @@ export const fetch = (resource: string | URL | Request, init?: Partial<FetchInit
 	const resourceURL = new URL(String(resource), currentURL.href)
 
 	if (resourceURL.protocol.toLowerCase() === 'file:') {
-		const stream = fs.createReadStream(resourceURL, { encoding: 'utf-8' })
-
-		return new Response(stream);
+		return Promise.resolve(
+			new Response(
+				fs.createReadStream(resourceURL, { encoding: 'utf-8' })
+			)
+		)
 	} else {
 		return nodeFetch(resource, init)
 	}
