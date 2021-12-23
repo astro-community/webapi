@@ -21,15 +21,15 @@ test(() => {
 	
 				polyfill(target)
 
-                const { fetch } = target
+				const { fetch } = target
 
-                const response = await fetch('https://api.openbrewerydb.org/breweries')
+				const response = await fetch('https://api.openbrewerydb.org/breweries')
 
 				assert.equal(response.constructor, target.Response)
 
-                const json = await response.json()
+				const json = await response.json()
 
-                assert.equal(Array.isArray(json), true)
+				assert.equal(Array.isArray(json), true)
 			},
 		},
 		{
@@ -39,17 +39,17 @@ test(() => {
 	
 				polyfill(target)
 
-                const { fetch } = target
+				const { fetch } = target
 
-                const url = new URL('../package.json', import.meta.url)
+				const url = new URL('../package.json', import.meta.url)
 
-                const response = await fetch(url)
+				const response = await fetch(url)
 
 				assert.equal(response.constructor, target.Response)
 
-                const json = await response.json()
+				const json = await response.json()
 
-                assert.equal(json.name, '@astropub/webapi')
+				assert.equal(json.name, '@astropub/webapi')
 			},
 		},
 		{
@@ -59,13 +59,13 @@ test(() => {
 	
 				polyfill(target)
 
-                const { fetch } = target
+				const { fetch } = target
 
-                const response = await fetch('../package.json')
+				const response = await fetch('../package.json')
 
-                const json = await response.json()
+				const json = await response.json()
 
-                assert.equal(json.name, '@astropub/webapi')
+				assert.equal(json.name, '@astropub/webapi')
 			},
 		},
 		{
@@ -75,17 +75,17 @@ test(() => {
 	
 				polyfill(target)
 
-                const { fetch } = target
+				const { fetch } = target
 
-                const jsonURI = `data:application/json,${encodeURIComponent(JSON.stringify({
-                    name: '@astropub/webapi'
-                }))}`
+				const jsonURI = `data:application/json,${encodeURIComponent(JSON.stringify({
+					name: '@astropub/webapi'
+				}))}`
 
-                const response = await fetch(jsonURI)
+				const response = await fetch(jsonURI)
 
-                const json = await response.json()
+				const json = await response.json()
 
-                assert.equal(json.name, '@astropub/webapi')
+				assert.equal(json.name, '@astropub/webapi')
 			},
 		},
 	]

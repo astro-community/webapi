@@ -59,14 +59,17 @@ const plugins = [
 			const indexes = []
 
 			const replacements = [
+				// remove unused imports
 				[ /(^|\n)import\s+[^']+'node:(fs|path|worker_threads)'/g, `` ],
 				[ /const \{ stat \} = fs/g, `` ],
 
+				// remove unused polyfill utils
 				[ /\nif \(\s*typeof Global[\W\w]+?\n\}/g, `` ],
 				[ /\nif \(\s*typeof window[\W\w]+?\n\}/g, `` ],
 				[ /\nif \(!globalThis\.ReadableStream\) \{[\W\w]+?\n\}/g, `` ],
 				[ /\nif \(typeof SymbolPolyfill[\W\w]+?\n\}/g, `` ],
 
+				// remove unused polyfills
 				[ /\nconst globals = getGlobals\(\);/g, `` ],
 				[ /\nconst queueMicrotask = [\W\w]+?\n\}\)\(\);/g, ``],
 				[ /\nconst NativeDOMException =[^;]+;/g, `` ],
@@ -74,11 +77,15 @@ const plugins = [
 				[ /\n(const|let) DOMException[^;]*;/g, `let DOMException$1=DOMException` ],
 				[ /\nconst DOMException = globalThis.DOMException[\W\w]+?\}\)\(\)/g, `` ],
 
+				// use shared AbortController methods
 				[ / new DOMException\$1/g, `new DOMException` ],
 				[ / from 'net'/g, `from 'node:net'` ],
 				[ / throw createInvalidStateError/g, `throw new DOMException` ],
 				[ /= createAbortController/g, `= new AbortController` ],
 				[ /\nconst queueMicrotask = [\W\w]+?\n\}\)\(\)\;/g, `` ],
+
+				// patch node-fetch to use `arrayBuffer` instead of `buffer`
+				[ /this\.buffer/g, `this.arrayBuffer` ],
 			]
 
 			for (const [replacee, replacer] of replacements) {
@@ -109,10 +116,6 @@ const plugins = [
 
 				const modifiedEsm = magicString.toString()
 				const modifiedMap = magicMap.toString()
-
-				if (/\bfs\b/.test(modifiedEsm)) {
-					console.log(modifiedEsm)
-				}
 
 				return { code: modifiedEsm, map: modifiedMap }
 			}
