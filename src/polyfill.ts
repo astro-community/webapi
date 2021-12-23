@@ -229,7 +229,7 @@ export const polyfill = (target: any, options?: PolyfillOptions) => {
 		if (excludeOptions.has(name)) continue
 
 		// skip WebAPIs that are built-in 
-		if (Reflect.has(target, name)) continue
+		if (Object.hasOwnProperty.call(target, name)) continue
 
 		// define WebAPIs on the target
 		Object.defineProperty(target, name, { configurable: true, enumerable: true, writable: true, value: webAPIs[name as keyof typeof webAPIs] })
@@ -241,7 +241,7 @@ export const polyfill = (target: any, options?: PolyfillOptions) => {
 		if (excludeOptions.has(name)) continue
 
 		// skip WebAPIs that do not extend other WebAPIs
-		if (!Reflect.has(inheritence, name)) continue
+		if (!Object.hasOwnProperty.call(inheritence, name)) continue
 
 		const Class = target[name]
 		const Super = target[inheritence[name as keyof typeof inheritence]]
