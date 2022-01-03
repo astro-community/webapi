@@ -2,6 +2,7 @@
 
 import { AbortController, AbortSignal } from 'abort-controller/dist/abort-controller.mjs'
 import { requestAnimationFrame, cancelAnimationFrame } from './lib/AnimationFrame'
+import { atob, btoa } from './lib/Base64'
 import { CharacterData, Comment, Text } from './lib/CharacterData'
 import { File, Blob } from 'fetch-blob/from.js'
 import { CustomEvent } from './lib/CustomEvent.js'
@@ -89,6 +90,8 @@ export {
 	Window,
 
 	alert,
+	atob,
+	btoa,
 	cancelAnimationFrame,
 	cancelIdleCallback,
 	clearTimeout,

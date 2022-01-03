@@ -57,6 +57,8 @@ import {
 	Window,
 
 	alert,
+	atob,
+	btoa,
 	cancelAnimationFrame,
 	cancelIdleCallback,
 	clearTimeout,
@@ -133,6 +135,8 @@ export {
 	Window,
 
 	alert,
+	atob,
+	btoa,
 	cancelAnimationFrame,
 	cancelIdleCallback,
 	clearTimeout,
@@ -202,6 +206,8 @@ export const polyfill = (target: any, options?: PolyfillOptions) => {
 		Window,
 
 		alert,
+		atob,
+		btoa,
 		cancelAnimationFrame,
 		cancelIdleCallback,
 		clearTimeout,

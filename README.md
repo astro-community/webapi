@@ -75,6 +75,8 @@ These APIs are combined from popular open source projects and configured to shar
 - [WritableStreamDefaultController](https://developer.mozilla.org/en-US/docs/Web/API/WritableStreamDefaultController)
 - [WritableStreamDefaultWriter](https://developer.mozilla.org/en-US/docs/Web/API/WritableStreamDefaultWriter)
 - [Window](https://developer.mozilla.org/en-US/docs/Web/API/Window)
+- [atob](https://developer.mozilla.org/en-US/docs/Web/API/atob)
+- [btoa](https://developer.mozilla.org/en-US/docs/Web/API/btoa)
 - [cancelAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/cancelAnimationFrame)
 - [cancelIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/cancelIdleCallback)
 - [clearTimeout](https://developer.mozilla.org/en-US/docs/Web/API/clearTimeout)
