@@ -13,16 +13,19 @@ import { FormData } from 'formdata-polyfill/esm.min.js'
 import { ByteLengthQueuingStrategy, CountQueuingStrategy, ReadableByteStreamController, ReadableStream, ReadableStreamBYOBReader, ReadableStreamBYOBRequest, ReadableStreamDefaultController, ReadableStreamDefaultReader, TransformStream, WritableStream, WritableStreamDefaultController, WritableStreamDefaultWriter } from 'web-streams-polyfill/dist/ponyfill.es6.mjs'
 import { setTimeout, clearTimeout } from './lib/Timeout'
 
+import { CanvasRenderingContext2D } from './lib/CanvasRenderingContext2D'
 import { CSSStyleSheet, StyleSheet } from './lib/StyleSheet'
 import { CustomElementRegistry, initCustomElementRegistry } from './lib/CustomElementRegistry'
 import { Document, HTMLDocument, initDocument } from './lib/Document'
 import { DocumentFragment, Node, ShadowRoot } from './lib/Node'
 import { Element, HTMLElement, HTMLBodyElement, HTMLDivElement, HTMLHeadElement, HTMLHtmlElement, HTMLSpanElement, HTMLStyleElement, HTMLTemplateElement, HTMLUnknownElement } from './lib/Element'
-import { HTMLImageElement } from './lib/HTMLImageElement'
 import { HTMLCanvasElement } from './lib/HTMLCanvasElement'
+import { HTMLImageElement } from './lib/HTMLImageElement'
 import { Image } from './lib/Image'
+import { ImageData } from './lib/ImageData'
 import { IntersectionObserver, MutationObserver, ResizeObserver } from './lib/Observer'
 import { MediaQueryList, initMediaQueryList } from './lib/MediaQueryList'
+import { OffscreenCanvas } from './lib/OffscreenCanvas'
 import { Window, initWindow } from './lib/Window'
 
 import { alert } from './lib/Alert'
@@ -32,6 +35,7 @@ export {
 	AbortSignal,
 	Blob,
 	ByteLengthQueuingStrategy,
+	CanvasRenderingContext2D,
 	CharacterData,
 	Comment,
 	CountQueuingStrategy,
@@ -60,9 +64,11 @@ export {
 	HTMLTemplateElement,
 	HTMLUnknownElement,
 	Image,
+	ImageData,
 	IntersectionObserver,
 	MediaQueryList,
 	MutationObserver,
+	OffscreenCanvas,
 	Node,
 	ReadableByteStreamController,
 	ReadableStream,

@@ -2,13 +2,13 @@ import { INTERNALS, internalsOf } from './utils'
 
 export class Document extends Node {
 	createElement(name: string) {
-		const internal = internalsOf<DocumentInternals>(this, 'Document', 'createElement')
+		const internals = internalsOf<DocumentInternals>(this, 'Document', 'createElement')
 
-		const customElementInternals: CustomElementRegistryInternals = INTERNALS.get(internal.target.customElements)
+		const customElementInternals: CustomElementRegistryInternals = INTERNALS.get(internals.target.customElements)
 
 		name = String(name).toLowerCase()
 
-		const TypeOfHTMLElement = internal.constructorByName.get(name) || (customElementInternals && customElementInternals.constructorByName.get(name)) || HTMLUnknownElement
+		const TypeOfHTMLElement = internals.constructorByName.get(name) || (customElementInternals && customElementInternals.constructorByName.get(name)) || HTMLUnknownElement
 
 		const element = Object.setPrototypeOf(new EventTarget(), TypeOfHTMLElement.prototype) as HTMLElement
 
