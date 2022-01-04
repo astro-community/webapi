@@ -20,7 +20,7 @@ export const initPromise = (target: any, exclude: Set<string>) => {
 
 	const Class = target.Promise || globalThis.Promise
 
-	Object.defineProperty(Class, 'any', {
+	if (!Class.any) Object.defineProperty(Class, 'any', {
 		value: any,
 		writable: true,
 		enumerable: false,

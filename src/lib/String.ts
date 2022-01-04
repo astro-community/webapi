@@ -13,7 +13,7 @@ export const initString = (target: any, exclude: Set<string>) => {
 
 	const Class = target.String || globalThis.String
 
-	Object.defineProperty(Class.prototype, 'replaceAll', {
+	if (!Class.prototype.replaceAll) Object.defineProperty(Class.prototype, 'replaceAll', {
 		value: replaceAll,
 		writable: true,
 		enumerable: false,

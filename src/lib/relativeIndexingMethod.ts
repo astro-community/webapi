@@ -22,7 +22,7 @@ export const initRelativeIndexingMethod = (target: any, exclude: Set<string>) =>
 	if (!exclude.has('String')) Classes.push(target.String || globalThis.String)
 
 	for (const Class of Classes) {
-		Object.defineProperty(Class.prototype, 'at', {
+		if (!Class.prototype.at) Object.defineProperty(Class.prototype, 'at', {
 			value: at,
 			writable: true,
 			enumerable: false,
