@@ -70,6 +70,10 @@ import {
 	initCustomElementRegistry,
 	initDocument,
 	initMediaQueryList,
+	initObject,
+	initPromise,
+	initRelativeIndexingMethod,
+	initString,
 	initWindow,
 } from './ponyfill'
 
@@ -279,13 +283,12 @@ export const polyfill = (target: any, options?: PolyfillOptions) => {
 		}
 	}
 
-	if (!excludeOptions.has('MediaQueryList')) {
-		initMediaQueryList(target, excludeOptions)
-	}
-
-	if (!excludeOptions.has('Window')) {
-		initWindow(target, excludeOptions)
-	}
+	initObject(target, excludeOptions)
+	initMediaQueryList(target, excludeOptions)
+	initPromise(target, excludeOptions)
+	initRelativeIndexingMethod(target, excludeOptions)
+	initString(target, excludeOptions)
+	initWindow(target, excludeOptions)
 }
 
 interface PolyfillOptions {

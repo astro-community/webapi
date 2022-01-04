@@ -8,7 +8,13 @@ export const __function_call = Function.call.bind(Function.call as unknown as an
 
 export const __object_create = Object.create as <T extends any = any>(value: T) => any extends T ? Record<any, any> : T
 
+export const __object_hasOwnProperty = Function.call.bind(Object.prototype.hasOwnProperty)
+
+export const __object_toString = Function.call.bind(Object.prototype.toString)
+
 export const __performance_now = performance.now as () => number
+
+export const __string_escapeRegExp = (value: string) => value.replace(/[\\^$*+?.()|[\]{}]/g, '\\$&')
 
 export const INTERNALS = new WeakMap()
 

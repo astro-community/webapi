@@ -1,7 +1,7 @@
 import type { HTMLCanvasElement } from './HTMLCanvasElement'
 import type { OffscreenCanvas } from './OffscreenCanvas'
 
-import { INTERNALS, internalsOf } from './utils'
+import { INTERNALS, internalsOf, __object_toString } from './utils'
 import { ImageData } from './ImageData'
 
 export class CanvasRenderingContext2D {
@@ -101,7 +101,8 @@ export class CanvasRenderingContext2D {
 	createImageData(imagedata: ImageData): void
 
 	createImageData(arg0: number | ImageData, arg1?: void | number) {
-		const hasData = isImageData(arg0 as ImageData)
+		/** Whether ImageData is provided. */
+		const hasData = __object_toString(arg0 as ImageData) === '[object ImageData]'
 
 		const w = hasData ? (arg0 as ImageData).width : arg0 as number
 		const h = hasData ? (arg0 as ImageData).height : arg1 as number

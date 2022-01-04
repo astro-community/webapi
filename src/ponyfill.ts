@@ -31,6 +31,11 @@ import { Window, initWindow } from './lib/Window'
 
 import { alert } from './lib/Alert'
 
+import { initObject } from './lib/Object'
+import { initPromise } from './lib/Promise'
+import { initRelativeIndexingMethod } from './lib/RelativeIndexingMethod'
+import { initString } from './lib/String'
+
 export {
 	AbortController,
 	AbortSignal,
@@ -103,5 +108,9 @@ export {
 	initCustomElementRegistry,
 	initDocument,
 	initMediaQueryList,
+	initObject,
+	initPromise,
+	initRelativeIndexingMethod,
+	initString,
 	initWindow,
 }

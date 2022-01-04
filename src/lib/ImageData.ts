@@ -1,4 +1,4 @@
-import { INTERNALS, internalsOf } from './utils'
+import { INTERNALS, internalsOf, __object_toString } from './utils'
 
 export class ImageData {
 	constructor(width: number, height: number);
@@ -10,8 +10,8 @@ export class ImageData {
 	constructor(arg0: number | Uint8ClampedArray, arg1: number, ...args: [] | [number] | [ImageDataSettings] | [number, ImageDataSettings]) {
 		if (arguments.length < 2) throw new TypeError(`Failed to construct 'ImageData': 2 arguments required.`)
 
-		/** Whether image data was provided. */
-		const hasData = isUint8ClampedArray(arg0)
+		/** Whether Uint8ClampedArray data is provided. */
+		const hasData = __object_toString(arg0) === '[object Uint8ClampedArray]'
 
 		/** Image data, either provided or calculated. */
 		const d = hasData ? arg0 as Uint8ClampedArray : new Uint8ClampedArray(asNumber(arg0, 'width') * asNumber(arg1, 'height') * 4)
@@ -46,9 +46,6 @@ export class ImageData {
 		return internalsOf<ImageDataInternals>(this, 'ImageData', 'height').height
 	}
 }
-
-/** Returns whether the value is an instance of Uint8ClampedArray. */
-const isUint8ClampedArray = <T>(value: T) => (value instanceof Uint8ClampedArray) as T extends Uint8ClampedArray ? true : false
 
 /** Returns a coerced number, optionally throwing if the number is zero-ish. */
 const asNumber = (value: any, axis: string): number => {
