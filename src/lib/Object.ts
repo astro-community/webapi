@@ -1,7 +1,7 @@
 import { __object_hasOwnProperty } from './utils'
 
 export const hasOwn = {
-	hasOwn(instance: object, property: string | symbol) {
+	hasOwn(instance: object, property: any) {
 		return __object_hasOwnProperty(instance, property)
 	}
 }.hasOwn

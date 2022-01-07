@@ -63,8 +63,21 @@ test(() => {
 				const id = new target.ImageData(w, h)
 
 				assert.equal(id.data.length, w * h * 4)
-				// assert.equal(id.width, w)
-				// assert.equal(id.height, h)
+				assert.equal(id.width, w)
+				assert.equal(id.height, h)
+			},
+		},
+		{
+			name: 'Supports Object.keys(new ImageData(640, 480))',
+			test() {
+				const target = {}
+	
+				polyfill(target)
+
+				const keys = Object.keys(new target.ImageData(640, 480))
+
+				assert.equal(keys.length, 1)
+				assert.equal(keys[0], 'data')
 			},
 		},
 	]

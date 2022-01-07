@@ -1,4 +1,4 @@
-import { INTERNALS, internalsOf, __object_toString } from './utils'
+import { INTERNALS, internalsOf, __object_isPrototypeOf } from './utils'
 
 export class ImageData {
 	constructor(width: number, height: number);
@@ -11,7 +11,7 @@ export class ImageData {
 		if (arguments.length < 2) throw new TypeError(`Failed to construct 'ImageData': 2 arguments required.`)
 
 		/** Whether Uint8ClampedArray data is provided. */
-		const hasData = __object_toString(arg0) === '[object Uint8ClampedArray]'
+		const hasData = __object_isPrototypeOf(Uint8ClampedArray.prototype, arg0)
 
 		/** Image data, either provided or calculated. */
 		const d = hasData ? arg0 as Uint8ClampedArray : new Uint8ClampedArray(asNumber(arg0, 'width') * asNumber(arg1, 'height') * 4)
@@ -31,11 +31,15 @@ export class ImageData {
 		// throw if a provided colorspace does not match a known colorspace
 		if (c !== 'srgb' && c !== 'rec2020' && c !== 'display-p3') throw new TypeError('colorSpace is not known value')
 
-		INTERNALS.set(this, { data: d, width: w, height: h, colorSpace: c } as ImageDataInternals)
+		Object.defineProperty(this, 'data', { configurable: true, enumerable: true, value: d })
+
+		INTERNALS.set(this, { width: w, height: h, colorSpace: c } as ImageDataInternals)
 	}
 
-	get data(): ImageDataInternals['data'] {
-		return internalsOf<ImageDataInternals>(this, 'ImageData', 'data').data
+	get data(): Uint8ClampedArray {
+		internalsOf<ImageDataInternals>(this, 'ImageData', 'data')
+
+		return (Object.getOwnPropertyDescriptor(this, 'data') as { value: Uint8ClampedArray }).value
 	}
 
 	get width(): ImageDataInternals['width'] {
@@ -58,7 +62,6 @@ const asNumber = (value: any, axis: string): number => {
 
 interface ImageDataInternals {
 	colorSpace: PredefinedColorSpace
-	data: Uint8ClampedArray
 	height: number
 	width: number
 }

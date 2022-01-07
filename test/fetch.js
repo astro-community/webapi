@@ -53,6 +53,26 @@ test(() => {
 			},
 		},
 		{
+			name: 'Fetch with (file) Request',
+			async test() {
+				const target = {}
+	
+				polyfill(target)
+
+				const { Request, fetch } = target
+
+				const request = new Request(new URL('../package.json', import.meta.url))
+
+				const response = await fetch(request)
+
+				assert.equal(response.constructor, target.Response)
+
+				const json = await response.json()
+
+				assert.equal(json.name, '@astropub/webapi')
+			},
+		},
+		{
 			name: 'Fetch with relative file',
 			async test() {
 				const target = {}
