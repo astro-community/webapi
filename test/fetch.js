@@ -61,7 +61,7 @@ test(() => {
 
 				const { fetch } = target
 
-				const response = await fetch('../package.json')
+				const response = await fetch('package.json')
 
 				const json = await response.json()
 

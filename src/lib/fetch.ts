@@ -1,16 +1,16 @@
 import { default as nodeFetch, Headers, Request, Response } from 'node-fetch/src/index.js'
 import * as fs from 'fs'
+import { __object_isPrototypeOf, __toPosixPath } from './utils'
 
 export { Headers, Request, Response }
 
 export const fetch = (resource: string | URL | Request, init?: Partial<FetchInit>): Promise<Response> => {
-	const currentURL = new URL(
-		(
-			String(Error().stack).split(import.meta.url).slice(1).join(import.meta.url).match(/(?<= \()[\w-]+:[^:)]+/) || [import.meta.url]
-		)[0]
+	const resourceURL = new URL(
+		__object_isPrototypeOf(Request.prototype, resource)
+			? (resource as Request).url
+		: __toPosixPath(resource),
+		import.meta.url
 	)
-
-	const resourceURL = new URL(String(resource), currentURL.href)
 
 	if (resourceURL.protocol.toLowerCase() === 'file:') {
 		return Promise.resolve(

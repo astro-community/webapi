@@ -12,9 +12,23 @@ export const __object_hasOwnProperty = Function.call.bind(Object.prototype.hasOw
 
 export const __object_toString = Function.call.bind(Object.prototype.toString)
 
+export const __object_isPrototypeOf = Function.call.bind(Object.prototype.isPrototypeOf)
+
 export const __performance_now = performance.now as () => number
 
 export const __string_escapeRegExp = (value: string) => value.replace(/[\\^$*+?.()|[\]{}]/g, '\\$&')
+
+
+/** Returns any kind of path as a posix path. */
+export const __toPosixPath = (pathname: any) => String(
+	pathname == null ? '' : pathname
+)
+// convert slashes
+.replace(/\\+/g, '/')
+// prefix a slash to drive letters
+.replace(/^(?=[A-Za-z]:\/)/, '/')
+// encode path characters
+.replace(/%/g, '%25').replace(/\n/g, '%0A').replace(/\r/g, '%0D').replace(/\t/g, '%09')
 
 export const INTERNALS = new WeakMap()
 
