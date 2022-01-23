@@ -23,6 +23,7 @@ const plugins = [
 			{ find: 'event-target-shim', replacement: pathToEventTargetShim },
 			{ find: 'event-target-shim/dist/event-target-shim.js', replacement: pathToEventTargetShim },
 			{ find: 'event-target-shim/dist/event-target-shim.umd.js', replacement: pathToEventTargetShim },
+			{ find: 'node-domexception', replacement: pathToDOMException },
 		],
 	}),
 	nodeResolve({
@@ -32,6 +33,9 @@ const plugins = [
 		]
 	}),
 	inject({
+		// import { Promise as P } from 'es6-promise'
+		// P: [ 'es6-promise', 'Promise' ],
+
 		'AbortController': [ 'abort-controller/dist/abort-controller.mjs', 'AbortController' ],
 		'DOMException': [pathToDOMException, 'DOMException'],
 		'Document': [ './Document', 'Document' ],
@@ -60,7 +64,7 @@ const plugins = [
 
 			const replacements = [
 				// remove unused imports
-				[ /(^|\n)import\s+[^']+'node:(fs|path|worker_threads)'/g, `` ],
+				[ /(^|\n)import\s+[^']+'node:(buffer|fs|path|worker_threads)'/g, `` ],
 				[ /const \{ stat \} = fs/g, `` ],
 
 				// remove unused polyfill utils
@@ -76,6 +80,7 @@ const plugins = [
 				[ /\nconst SymbolPolyfill\s*=[^;]+;/g, '\nconst SymbolPolyfill = Symbol;'],
 				[ /\n(const|let) DOMException[^;]*;/g, `let DOMException$1=DOMException` ],
 				[ /\nconst DOMException = globalThis.DOMException[\W\w]+?\}\)\(\)/g, `` ],
+				[ /\nimport DOMException from 'node-domexception'/g, `` ],
 
 				// use shared AbortController methods
 				[ / new DOMException\$1/g, `new DOMException` ],
@@ -84,8 +89,11 @@ const plugins = [
 				[ /= createAbortController/g, `= new AbortController` ],
 				[ /\nconst queueMicrotask = [\W\w]+?\n\}\)\(\)\;/g, `` ],
 
-				// patch node-fetch to use `arrayBuffer` instead of `buffer`
-				[ /this\.buffer/g, `this.arrayBuffer` ],
+				// remove Body.prototype.buffer deprecation notice
+				[ /\nBody\.prototype\.buffer[^\n]+/g, `` ],
+
+				// remove Body.prototype.data deprecation notice
+				[ /\n	data: \{get: deprecate[\W\w]+?\)\}/g, `` ]
 			]
 
 			for (const [replacee, replacer] of replacements) {
