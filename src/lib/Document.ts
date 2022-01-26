@@ -42,8 +42,9 @@ export const initDocument = (target: Target, exclude: Set<string>) => {
 	if (exclude.has('document')) return
 
 	const EventTarget = target.EventTarget || globalThis.EventTarget
+	const HTMLDocument = target.HTMLDocument || globalThis.HTMLDocument
 
-	const document: HTMLDocument = target.document = Object.setPrototypeOf(new EventTarget(), target.HTMLDocument.prototype)
+	const document: HTMLDocument = target.document = Object.setPrototypeOf(new EventTarget(), HTMLDocument.prototype)
 
 	INTERNALS.set(document, {
 		target,
