@@ -291,6 +291,21 @@ export const polyfill = (target: any, options?: PolyfillOptions) => {
 	initWindow(target, excludeOptions)
 }
 
+polyfill.internals = (target: any, name: string) => {
+	const init = {
+		CustomElementRegistry: initCustomElementRegistry,
+		Document: initDocument,
+		MediaQueryList: initMediaQueryList,
+		Object: initObject,
+		Promise: initPromise,
+		RelativeIndexingMethod: initRelativeIndexingMethod,
+		String: initString,
+		Window: initWindow,
+	}
+
+	return init[name as keyof typeof init](target, new Set<string>())
+}
+
 interface PolyfillOptions {
 	exclude?: string | string[]
 	override?: Record<string, { (...args: any[]): any }>
