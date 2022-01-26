@@ -49,6 +49,8 @@ interface ElementDefinitionOptions {
 export const initCustomElementRegistry = (target: Record<any, any>, exclude: Set<string>) => {
 	if (exclude.has('customElements')) return
 
+	const CustomElementRegistry = target.CustomElementRegistry || globalThis.CustomElementRegistry
+
 	const customElements: CustomElementRegistry = target.customElements = Object.create(CustomElementRegistry.prototype)
 
 	INTERNALS.set(customElements, {

@@ -13,6 +13,9 @@ export class MediaQueryList extends EventTarget {
 export const initMediaQueryList = (target: Target, exclude: Set<string>) => {
 	if (exclude.has('MediaQueryList') || exclude.has('matchMedia')) return
 
+	const EventTarget = target.EventTarget || globalThis.EventTarget
+	const MediaQueryList = target.MediaQueryList || globalThis.MediaQueryList
+
 	target.matchMedia = function matchMedia(media: string) {
 		const mql = Object.setPrototypeOf(new EventTarget(), MediaQueryList.prototype) as MediaQueryList
 
