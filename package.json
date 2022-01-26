@@ -1,7 +1,7 @@
 {
   "name": "@astropub/webapi",
   "description": "Use Web APIs in Node",
-  "version": "0.10.7",
+  "version": "0.10.8",
   "type": "module",
   "exports": {
     ".": {
@@ -58,7 +58,7 @@
   },
   "scripts": {
     "build": "node run/build.js",
-    "release": "npm publish --access public",
+    "release": "node run/build.js && npm publish --access public",
     "test": "node run/test.js"
   },
   "prettier": {
