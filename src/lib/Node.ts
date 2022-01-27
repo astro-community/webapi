@@ -1,3 +1,5 @@
+import { setStringTag } from './utils'
+
 export class Node extends EventTarget {
 	constructor() {
 		throw new TypeError('Illegal constructor')
@@ -91,5 +93,9 @@ export class ShadowRoot extends DocumentFragment {
 		void value
 	}
 }
+
+setStringTag(Node)
+setStringTag(DocumentFragment)
+setStringTag(ShadowRoot)
 
 type NodeOrString = string | Node

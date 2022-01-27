@@ -47,3 +47,5 @@ export const internalsOf = <T extends object>(target: T | object, className: str
 
 	return internals
 }
+
+export const setStringTag = (value: any) => value.prototype[Symbol.toStringTag] = value.name

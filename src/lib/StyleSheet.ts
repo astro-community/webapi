@@ -1,3 +1,5 @@
+import { setStringTag } from './utils'
+
 export class StyleSheet {}
 
 export class CSSStyleSheet extends StyleSheet {
@@ -17,3 +19,6 @@ export class CSSStyleSheet extends StyleSheet {
 		return []
 	}
 }
+
+setStringTag(StyleSheet)
+setStringTag(CSSStyleSheet)

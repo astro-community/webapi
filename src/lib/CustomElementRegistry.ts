@@ -1,4 +1,4 @@
-import { INTERNALS, internalsOf } from './utils'
+import { INTERNALS, internalsOf, setStringTag } from './utils'
 
 export class CustomElementRegistry {
 	constructor() {
@@ -36,6 +36,8 @@ export class CustomElementRegistry {
 		return internals.nameByConstructor.get(constructor)
 	}
 }
+
+setStringTag(CustomElementRegistry)
 
 interface CustomElementRegistryInternals {
 	constructorByName: Map<string, Function>;

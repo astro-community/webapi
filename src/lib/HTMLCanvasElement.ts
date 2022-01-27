@@ -1,6 +1,6 @@
 import type { CanvasRenderingContext2D } from './CanvasRenderingContext2D'
 
-import { internalsOf } from './utils'
+import { internalsOf, setStringTag } from './utils'
 import { __createCanvasRenderingContext2D } from './CanvasRenderingContext2D'
 
 export class HTMLCanvasElement extends HTMLElement {
@@ -45,6 +45,8 @@ export class HTMLCanvasElement extends HTMLElement {
 
 	transferControlToOffscreen() {}
 }
+
+setStringTag(HTMLCanvasElement)
 
 interface HTMLCanvasElementInternals {
 	width: number

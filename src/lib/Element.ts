@@ -1,4 +1,4 @@
-import { internalsOf } from './utils'
+import { internalsOf, setStringTag } from './utils'
 
 export class Element extends Node {
 	hasAttribute(name: string): boolean {
@@ -91,6 +91,17 @@ export class HTMLStyleElement extends HTMLElement {}
 export class HTMLTemplateElement extends HTMLElement {}
 
 export class HTMLUnknownElement extends HTMLElement {}
+
+setStringTag(Element)
+setStringTag(HTMLElement)
+setStringTag(HTMLBodyElement)
+setStringTag(HTMLDivElement)
+setStringTag(HTMLHeadElement)
+setStringTag(HTMLHtmlElement)
+setStringTag(HTMLSpanElement)
+setStringTag(HTMLStyleElement)
+setStringTag(HTMLTemplateElement)
+setStringTag(HTMLUnknownElement)
 
 export interface ElementInternals {
 	localName: string

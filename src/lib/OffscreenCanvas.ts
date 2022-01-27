@@ -1,6 +1,6 @@
 import type { CanvasRenderingContext2D } from './CanvasRenderingContext2D'
 
-import { INTERNALS, internalsOf } from './utils'
+import { INTERNALS, internalsOf, setStringTag } from './utils'
 import { __createCanvasRenderingContext2D } from './CanvasRenderingContext2D'
 
 export class OffscreenCanvas extends EventTarget {
@@ -59,6 +59,8 @@ export class OffscreenCanvas extends EventTarget {
 		)
 	}
 }
+
+setStringTag(OffscreenCanvas)
 
 const getImageType = (type: string): PredefinedImageType => type === 'image/avif' || type === 'image/jpeg' || type === 'image/png' || type === 'image/webp' ? type : 'image/png'
 

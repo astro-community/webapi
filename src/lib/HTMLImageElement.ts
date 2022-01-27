@@ -1,4 +1,4 @@
-import { internalsOf } from './utils'
+import { internalsOf, setStringTag } from './utils'
 import { HTMLElement } from './Element'
 
 export class HTMLImageElement extends HTMLElement {
@@ -12,3 +12,5 @@ export class HTMLImageElement extends HTMLElement {
 		internals.src = String(value)
 	}
 }
+
+setStringTag(HTMLImageElement)

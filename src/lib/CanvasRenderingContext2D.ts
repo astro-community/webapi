@@ -1,7 +1,7 @@
 import type { HTMLCanvasElement } from './HTMLCanvasElement'
 import type { OffscreenCanvas } from './OffscreenCanvas'
 
-import { INTERNALS, internalsOf, __object_isPrototypeOf } from './utils'
+import { INTERNALS, internalsOf, setStringTag, __object_isPrototypeOf } from './utils'
 import { ImageData } from './ImageData'
 
 export class CanvasRenderingContext2D {
@@ -145,6 +145,8 @@ export class CanvasRenderingContext2D {
 	transform() {}
 	translate() {}
 }
+
+setStringTag(CanvasRenderingContext2D)
 
 export const __createCanvasRenderingContext2D = (canvas: EventTarget): CanvasRenderingContext2D => {
 	const renderingContext2D = Object.create(CanvasRenderingContext2D.prototype) as CanvasRenderingContext2D

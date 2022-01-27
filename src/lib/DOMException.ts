@@ -1,3 +1,5 @@
+import { setStringTag } from './utils'
+
 export class DOMException extends Error {
 	constructor(message = '', name = 'Error') {
 		super(message)
@@ -34,3 +36,5 @@ export class DOMException extends Error {
 	static INVALID_NODE_TYPE_ERR = 24
 	static DATA_CLONE_ERR = 25
 }
+
+setStringTag(DOMException)

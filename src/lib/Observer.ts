@@ -1,3 +1,5 @@
+import { setStringTag } from './utils'
+
 export class IntersectionObserver {
 	disconnect() {}
 
@@ -33,3 +35,7 @@ export class ResizeObserver {
 
 	unobserve() {}
 }
+
+setStringTag(MutationObserver)
+setStringTag(IntersectionObserver)
+setStringTag(ResizeObserver)

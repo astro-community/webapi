@@ -1,3 +1,4 @@
+import { setStringTag } from './utils'
 import { Event } from 'event-target-shim'
 
 class CustomEvent<TEventType extends string = string> extends Event<TEventType> {
@@ -11,6 +12,8 @@ class CustomEvent<TEventType extends string = string> extends Event<TEventType> 
 
 	detail!: any
 }
+
+setStringTag(CustomEvent)
 
 export { CustomEvent }
 

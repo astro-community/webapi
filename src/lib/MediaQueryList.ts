@@ -1,4 +1,4 @@
-import { INTERNALS, internalsOf } from './utils'
+import { INTERNALS, internalsOf, setStringTag } from './utils'
 
 export class MediaQueryList extends EventTarget {
 	get matches(): boolean {
@@ -9,6 +9,8 @@ export class MediaQueryList extends EventTarget {
 		return internalsOf(this, 'MediaQueryList', 'media').media
 	}
 }
+
+setStringTag(MediaQueryList)
 
 export const initMediaQueryList = (target: Target, exclude: Set<string>) => {
 	if (exclude.has('MediaQueryList') || exclude.has('matchMedia')) return

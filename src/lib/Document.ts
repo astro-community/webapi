@@ -1,4 +1,4 @@
-import { INTERNALS, internalsOf } from './utils'
+import { INTERNALS, internalsOf, setStringTag } from './utils'
 
 export class Document extends Node {
 	createElement(name: string) {
@@ -37,6 +37,9 @@ export class Document extends Node {
 }
 
 export class HTMLDocument extends Document {}
+
+setStringTag(Document)
+setStringTag(HTMLDocument)
 
 export const initDocument = (target: Target, exclude: Set<string>) => {
 	if (exclude.has('document')) return

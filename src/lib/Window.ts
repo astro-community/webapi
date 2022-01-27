@@ -1,3 +1,5 @@
+import { setStringTag } from './utils'
+
 export class Window extends EventTarget {
 	get self(): this {
 		return this
@@ -27,6 +29,8 @@ export class Window extends EventTarget {
 		return 0
 	}
 }
+
+setStringTag(Window)
 
 export const initWindow = (target: Target, exclude: Set<string>) => {
 	if (exclude.has('Window') || exclude.has('window')) return

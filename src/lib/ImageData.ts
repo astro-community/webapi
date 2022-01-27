@@ -1,4 +1,4 @@
-import { INTERNALS, internalsOf, __object_isPrototypeOf } from './utils'
+import { INTERNALS, internalsOf, setStringTag, __object_isPrototypeOf } from './utils'
 
 export class ImageData {
 	constructor(width: number, height: number);
@@ -50,6 +50,8 @@ export class ImageData {
 		return internalsOf<ImageDataInternals>(this, 'ImageData', 'height').height
 	}
 }
+
+setStringTag(ImageData)
 
 /** Returns a coerced number, optionally throwing if the number is zero-ish. */
 const asNumber = (value: any, axis: string): number => {
