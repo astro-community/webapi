@@ -27,31 +27,8 @@ export const __performance_now = performance.now as () => number
 /** Returns the string escaped for use inside regular expressions. */
 export const __string_escapeRegExp = (value: string) => value.replace(/[\\^$*+?.()|[\]{}]/g, '\\$&')
 
-export const INTERNALS = new WeakMap()
-
-export const allowed = new Set<unknown>()
-
-export const allowConstruction = allowed.add.bind(allowed)
-
-export function construct<T extends unknown, P extends {}>(target: T | object, props?: P): P {
-	if (allowed.has((target as object).constructor)) {
-		props = Object(props)
-
-		INTERNALS.set(target as object, props)
-
-		return props as P
-	} else {
-		throw new TypeError('Illegal constructor')
-	}
-}
-
-export function from<T extends object>(target: T | object, className: string, propName: string): T {
-	const internals: T = INTERNALS.get(target)
-
-	if (!internals) throw new TypeError(`${className}.${propName} can only be used on instances of ${className}`)
-
-	return internals
-}
+// @ts-ignore
+export const INTERNALS = new WeakMap<unknown, any>()
 
 export const internalsOf = <T extends object>(target: T | object, className: string, propName: string): T => {
 	const internals: T = INTERNALS.get(target)

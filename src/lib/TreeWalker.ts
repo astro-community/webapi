@@ -1,10 +1,6 @@
 import * as _ from './utils'
 
 export class TreeWalker {
-	constructor() {
-		throw new TypeError('Illegal constructor')
-	}
-
 	parentNode(): Node | null {
 		return null
 	}

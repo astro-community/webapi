@@ -8,8 +8,6 @@ export class Element extends Node {
 	}
 
 	getAttribute(name: string): string | null {
-		void name
-
 		return null
 	}
 
@@ -66,15 +64,15 @@ export class Element extends Node {
 	}
 
 	get localName(): string {
-		return _.internalsOf<ElementInternals>(this, 'Element', 'localName').localName
+		return _.internalsOf<ElementInternals>(this, 'Element', 'localName').localName as string
 	}
 
 	get nodeName(): string {
-		return _.internalsOf<ElementInternals>(this, 'Element', 'nodeName').localName.toUpperCase()
+		return (_.internalsOf<ElementInternals>(this, 'Element', 'nodeName').localName as string).toUpperCase()
 	}
 
 	get tagName(): string {
-		return _.internalsOf<ElementInternals>(this, 'Element', 'tagName').localName.toUpperCase()
+		return (_.internalsOf<ElementInternals>(this, 'Element', 'tagName').localName as string).toUpperCase()
 	}
 }
 
@@ -108,9 +106,10 @@ _.allowStringTag(HTMLTemplateElement)
 _.allowStringTag(HTMLUnknownElement)
 
 export interface ElementInternals {
-	localName: string
+	attributes: { [name: string]: string },
+	localName?: string
 	shadowRoot: ShadowRoot | null
-	shadowInit: ShadowRootInit
+	shadowInit: ShadowRootInit | void
 }
 
 export interface ShadowRootInit {

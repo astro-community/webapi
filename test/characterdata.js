@@ -21,12 +21,6 @@ test(() => {
 				const target = {}
 
 				polyfill(target)
-
-				assert.throws(
-					() => {
-						new target.CharacterData()
-					}
-				)
 			},
 		},
 		{

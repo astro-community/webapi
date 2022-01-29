@@ -1,10 +1,6 @@
 import * as _ from './utils'
 
 export class CustomElementRegistry {
-	constructor() {
-		throw new TypeError('Illegal constructor');
-	}
-
 	/** Defines a new custom element using the given tag name and HTMLElement constructor. */
 	define(name: string, constructor: Function, options?: ElementDefinitionOptions) {
 		const internals = _.internalsOf<CustomElementRegistryInternals>(this, 'CustomElementRegistry', 'define')

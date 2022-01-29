@@ -60,9 +60,6 @@ export class Document extends Node {
 
 export class HTMLDocument extends Document {}
 
-_.allowConstruction(Document)
-_.allowConstruction(HTMLDocument)
-
 _.allowStringTag(Document)
 _.allowStringTag(HTMLDocument)
 

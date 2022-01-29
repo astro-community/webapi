@@ -1,10 +1,6 @@
 import * as _ from './utils'
 
 export class Storage {
-	constructor() {
-		_.construct(this)
-	}
-
 	clear(): void {
 		_.internalsOf<StorageInternals>(this, 'Storage', 'clear').storage.clear()
 	}

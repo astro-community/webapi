@@ -1,10 +1,6 @@
 import * as _ from './utils'
 
 export class Node extends EventTarget {
-	constructor() {
-		_.construct(super())
-	}
-
 	append(...nodesOrDOMStrings: NodeOrString[]): void {
 		void nodesOrDOMStrings
 	}
@@ -116,10 +112,6 @@ export const NodeFilter = Object.assign({
 })
 
 export class NodeIterator {
-	constructor() {
-		throw new TypeError('Illegal constructor')
-	}
-
 	nextNode(): Node | null {
 		return null
 	}
@@ -153,8 +145,6 @@ export class NodeIterator {
 		return internals.whatToShow
 	}
 }
-
-_.allowConstruction(DocumentFragment)
 
 _.allowStringTag(Node)
 _.allowStringTag(NodeIterator)
