@@ -1,9 +1,9 @@
-import { INTERNALS } from './utils'
+import * as _ from './utils'
 import { HTMLImageElement } from './HTMLImageElement'
 
 export function Image() {
 	// @ts-ignore
-	INTERNALS.set(this, {
+	_.INTERNALS.set(this, {
 		attributes: {},
 		localName: 'img',
 		innerHTML: '',

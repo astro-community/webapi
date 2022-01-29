@@ -1,4 +1,4 @@
-import { INTERNALS, internalsOf, setStringTag } from './utils'
+import * as _ from './utils'
 
 export class CustomElementRegistry {
 	constructor() {
@@ -7,7 +7,7 @@ export class CustomElementRegistry {
 
 	/** Defines a new custom element using the given tag name and HTMLElement constructor. */
 	define(name: string, constructor: Function, options?: ElementDefinitionOptions) {
-		const internals = internalsOf<CustomElementRegistryInternals>(this, 'CustomElementRegistry', 'define')
+		const internals = _.internalsOf<CustomElementRegistryInternals>(this, 'CustomElementRegistry', 'define')
 
 		name = String(name)
 
@@ -23,7 +23,7 @@ export class CustomElementRegistry {
 
 	/** Returns the constructor associated with the given tag name. */
 	get(name: string) {
-		const internals = internalsOf<CustomElementRegistryInternals>(this, 'CustomElementRegistry', 'get')
+		const internals = _.internalsOf<CustomElementRegistryInternals>(this, 'CustomElementRegistry', 'get')
 
 		name = String(name).toLowerCase()
 
@@ -31,13 +31,13 @@ export class CustomElementRegistry {
 	}
 
 	getName(constructor: Function) {
-		const internals = internalsOf<CustomElementRegistryInternals>(this, 'CustomElementRegistry', 'getName')
+		const internals = _.internalsOf<CustomElementRegistryInternals>(this, 'CustomElementRegistry', 'getName')
 
 		return internals.nameByConstructor.get(constructor)
 	}
 }
 
-setStringTag(CustomElementRegistry)
+_.allowStringTag(CustomElementRegistry)
 
 interface CustomElementRegistryInternals {
 	constructorByName: Map<string, Function>;
@@ -55,7 +55,7 @@ export const initCustomElementRegistry = (target: Record<any, any>, exclude: Set
 
 	const customElements: CustomElementRegistry = target.customElements = Object.create(CustomElementRegistry.prototype)
 
-	INTERNALS.set(customElements, {
+	_.INTERNALS.set(customElements, {
 		constructorByName: new Map,
 		nameByConstructor: new Map,
 	} as CustomElementRegistryInternals)

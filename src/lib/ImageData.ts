@@ -1,4 +1,4 @@
-import { INTERNALS, internalsOf, setStringTag, __object_isPrototypeOf } from './utils'
+import * as _ from './utils'
 
 export class ImageData {
 	constructor(width: number, height: number);
@@ -11,7 +11,7 @@ export class ImageData {
 		if (arguments.length < 2) throw new TypeError(`Failed to construct 'ImageData': 2 arguments required.`)
 
 		/** Whether Uint8ClampedArray data is provided. */
-		const hasData = __object_isPrototypeOf(Uint8ClampedArray.prototype, arg0)
+		const hasData = _.__object_isPrototypeOf(Uint8ClampedArray.prototype, arg0)
 
 		/** Image data, either provided or calculated. */
 		const d = hasData ? arg0 as Uint8ClampedArray : new Uint8ClampedArray(asNumber(arg0, 'width') * asNumber(arg1, 'height') * 4)
@@ -33,25 +33,25 @@ export class ImageData {
 
 		Object.defineProperty(this, 'data', { configurable: true, enumerable: true, value: d })
 
-		INTERNALS.set(this, { width: w, height: h, colorSpace: c } as ImageDataInternals)
+		_.INTERNALS.set(this, { width: w, height: h, colorSpace: c } as ImageDataInternals)
 	}
 
 	get data(): Uint8ClampedArray {
-		internalsOf<ImageDataInternals>(this, 'ImageData', 'data')
+		_.internalsOf<ImageDataInternals>(this, 'ImageData', 'data')
 
 		return (Object.getOwnPropertyDescriptor(this, 'data') as { value: Uint8ClampedArray }).value
 	}
 
 	get width(): ImageDataInternals['width'] {
-		return internalsOf<ImageDataInternals>(this, 'ImageData', 'width').width
+		return _.internalsOf<ImageDataInternals>(this, 'ImageData', 'width').width
 	}
 
 	get height(): ImageDataInternals['height'] {
-		return internalsOf<ImageDataInternals>(this, 'ImageData', 'height').height
+		return _.internalsOf<ImageDataInternals>(this, 'ImageData', 'height').height
 	}
 }
 
-setStringTag(ImageData)
+_.allowStringTag(ImageData)
 
 /** Returns a coerced number, optionally throwing if the number is zero-ish. */
 const asNumber = (value: any, axis: string): number => {

@@ -1,10 +1,8 @@
-import { setStringTag } from './utils'
+import * as _ from './utils'
 
 export class Node extends EventTarget {
 	constructor() {
-		throw new TypeError('Illegal constructor')
-
-		super()
+		_.construct(super())
 	}
 
 	append(...nodesOrDOMStrings: NodeOrString[]): void {
@@ -94,8 +92,85 @@ export class ShadowRoot extends DocumentFragment {
 	}
 }
 
-setStringTag(Node)
-setStringTag(DocumentFragment)
-setStringTag(ShadowRoot)
+export const NodeFilter = Object.assign({
+	NodeFilter() {
+		throw new TypeError('Illegal constructor')
+	}
+}.NodeFilter, {
+	FILTER_ACCEPT: 1,
+	FILTER_REJECT: 2,
+	FILTER_SKIP: 3,
+	SHOW_ALL: 4294967295,
+	SHOW_ELEMENT: 1,
+	SHOW_ATTRIBUTE: 2,
+	SHOW_TEXT: 4,
+	SHOW_CDATA_SECTION: 8,
+	SHOW_ENTITY_REFERENCE: 16,
+	SHOW_ENTITY: 32,
+	SHOW_PROCESSING_INSTRUCTION: 64,
+	SHOW_COMMENT: 128,
+	SHOW_DOCUMENT: 256,
+	SHOW_DOCUMENT_TYPE: 512,
+	SHOW_DOCUMENT_FRAGMENT: 1024,
+	SHOW_NOTATION: 2048,
+})
+
+export class NodeIterator {
+	constructor() {
+		throw new TypeError('Illegal constructor')
+	}
+
+	nextNode(): Node | null {
+		return null
+	}
+
+	previousNode(): Node | null {
+		return null
+	}
+
+	get filter(): NodeFilter {
+		const internals = _.internalsOf<NodeIteratorInternals>(this, 'NodeIterator', 'filter')
+		return internals.filter
+	}
+
+	get pointerBeforeReferenceNode(): boolean {
+		const internals = _.internalsOf<NodeIteratorInternals>(this, 'NodeIterator', 'pointerBeforeReferenceNode')
+		return internals.pointerBeforeReferenceNode
+	}
+
+	get referenceNode(): Node {
+		const internals = _.internalsOf<NodeIteratorInternals>(this, 'NodeIterator', 'referenceNode')
+		return internals.referenceNode
+	}
+
+	get root(): Node {
+		const internals = _.internalsOf<NodeIteratorInternals>(this, 'NodeIterator', 'root')
+		return internals.root
+	}
+
+	get whatToShow(): number {
+		const internals = _.internalsOf<NodeIteratorInternals>(this, 'NodeIterator', 'whatToShow')
+		return internals.whatToShow
+	}
+}
+
+_.allowConstruction(DocumentFragment)
+
+_.allowStringTag(Node)
+_.allowStringTag(NodeIterator)
+_.allowStringTag(DocumentFragment)
+_.allowStringTag(ShadowRoot)
 
 type NodeOrString = string | Node
+
+export interface NodeFilter {
+	acceptNode(node: Node): number
+}
+
+export interface NodeIteratorInternals {
+	filter: NodeFilter
+	pointerBeforeReferenceNode: boolean
+	referenceNode: Node
+	root: Node
+	whatToShow: number
+}

@@ -1,16 +1,16 @@
-import { INTERNALS, internalsOf, setStringTag } from './utils'
+import * as _ from './utils'
 
 export class MediaQueryList extends EventTarget {
 	get matches(): boolean {
-		return internalsOf(this, 'MediaQueryList', 'matches').matches
+		return _.internalsOf(this, 'MediaQueryList', 'matches').matches
 	}
 
 	get media(): string {
-		return internalsOf(this, 'MediaQueryList', 'media').media
+		return _.internalsOf(this, 'MediaQueryList', 'media').media
 	}
 }
 
-setStringTag(MediaQueryList)
+_.allowStringTag(MediaQueryList)
 
 export const initMediaQueryList = (target: Target, exclude: Set<string>) => {
 	if (exclude.has('MediaQueryList') || exclude.has('matchMedia')) return
@@ -21,7 +21,7 @@ export const initMediaQueryList = (target: Target, exclude: Set<string>) => {
 	target.matchMedia = function matchMedia(media: string) {
 		const mql = Object.setPrototypeOf(new EventTarget(), MediaQueryList.prototype) as MediaQueryList
 
-		INTERNALS.set(mql, {
+		_.INTERNALS.set(mql, {
 			matches: false,
 			media,
 		})

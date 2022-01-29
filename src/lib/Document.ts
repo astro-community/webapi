@@ -1,10 +1,11 @@
-import { INTERNALS, internalsOf, setStringTag } from './utils'
+import * as _ from './utils'
+import { Text } from './CharacterData'
 
 export class Document extends Node {
 	createElement(name: string) {
-		const internals = internalsOf<DocumentInternals>(this, 'Document', 'createElement')
+		const internals = _.internalsOf<DocumentInternals>(this, 'Document', 'createElement')
 
-		const customElementInternals: CustomElementRegistryInternals = INTERNALS.get(internals.target.customElements)
+		const customElementInternals: CustomElementRegistryInternals = _.INTERNALS.get(internals.target.customElements)
 
 		name = String(name).toLowerCase()
 
@@ -12,7 +13,7 @@ export class Document extends Node {
 
 		const element = Object.setPrototypeOf(new EventTarget(), TypeOfHTMLElement.prototype) as HTMLElement
 
-		INTERNALS.set(element, {
+		_.INTERNALS.set(element, {
 			attributes: {},
 			localName: name,
 			ownerDocument: this,
@@ -21,6 +22,26 @@ export class Document extends Node {
 		} as ElementInternals)
 
 		return element
+	}
+
+	createNodeIterator(root: Node, whatToShow: number = NodeFilter.SHOW_ALL, filter?: NodeIteratorInternals['filter']) {
+		const target = Object.create(NodeIterator.prototype)
+
+		_.INTERNALS.set(target, { filter, pointerBeforeReferenceNode: false, referenceNode: root, root, whatToShow } as NodeIteratorInternals)
+
+		return target
+	}
+
+	createTextNode(data: string) {
+		return new Text(data)
+	}
+
+	createTreeWalker(root: Node, whatToShow: number = NodeFilter.SHOW_ALL, filter?: NodeFilter, expandEntityReferences?: boolean) {
+		const target = Object.create(TreeWalker.prototype)
+
+		_.INTERNALS.set(target, { filter, currentNode: root, root, whatToShow } as TreeWalkerInternals)
+
+		return target
 	}
 
 	get adoptedStyleSheets(): StyleSheet[] {
@@ -38,8 +59,11 @@ export class Document extends Node {
 
 export class HTMLDocument extends Document {}
 
-setStringTag(Document)
-setStringTag(HTMLDocument)
+_.allowConstruction(Document)
+_.allowConstruction(HTMLDocument)
+
+_.allowStringTag(Document)
+_.allowStringTag(HTMLDocument)
 
 export const initDocument = (target: Target, exclude: Set<string>) => {
 	if (exclude.has('document')) return
@@ -49,7 +73,7 @@ export const initDocument = (target: Target, exclude: Set<string>) => {
 
 	const document: HTMLDocument = target.document = Object.setPrototypeOf(new EventTarget(), HTMLDocument.prototype)
 
-	INTERNALS.set(document, {
+	_.INTERNALS.set(document, {
 		target,
 		constructorByName: new Map<string, Function>([
 			['body', target.HTMLBodyElement],
@@ -67,7 +91,7 @@ export const initDocument = (target: Target, exclude: Set<string>) => {
 	const initElement = (name: string, Class: Function) => {
 		const target = Object.setPrototypeOf(new EventTarget(), Class.prototype)
 
-		INTERNALS.set(target, {
+		_.INTERNALS.set(target, {
 			attributes: {},
 			localName: name,
 			ownerDocument: document,
@@ -119,4 +143,19 @@ interface Target extends Record<any, any> {
 	HTMLStyleElement: typeof HTMLStyleElement
 	customElements: CustomElementRegistry
 	document: DocumentInternals
+}
+
+interface NodeIteratorInternals {
+	filter: NodeFilter
+	pointerBeforeReferenceNode: boolean
+	referenceNode: Node
+	root: Node
+	whatToShow: number
+}
+
+interface TreeWalkerInternals {
+	filter: NodeFilter
+	currentNode: Node
+	root: Node
+	whatToShow: number
 }

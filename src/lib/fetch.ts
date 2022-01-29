@@ -1,27 +1,61 @@
 import { default as nodeFetch, Headers, Request, Response } from 'node-fetch/src/index.js'
-import * as fs from 'fs'
-import { __object_isPrototypeOf, __toPosixPath } from './utils'
+import Stream from 'node:stream'
+import * as _ from './utils'
 
 export { Headers, Request, Response }
 
-export const fetch = (resource: string | URL | Request, init?: Partial<FetchInit>): Promise<Response> => {
-	const resourceURL = new URL(
-		__object_isPrototypeOf(Request.prototype, resource)
-			? (resource as Request).url
-		: __toPosixPath(resource),
-		import.meta.url
-	)
-
-	if (resourceURL.protocol.toLowerCase() === 'file:') {
-		return Promise.resolve(
-			new Response(
-				fs.createReadStream(resourceURL)
-			)
+export const fetch = {
+	fetch(resource: string | URL | Request, init?: Partial<FetchInit>): Promise<Response> {
+		const resourceURL = new URL(
+			_.__object_isPrototypeOf(Request.prototype, resource)
+				? (resource as Request).url
+			: _.pathToPosix(resource),
+			typeof Object(globalThis.process).cwd === 'function' ? 'file:' + _.pathToPosix(process.cwd()) + '/' : 'file:'
 		)
-	} else {
-		return nodeFetch(resource, init)
+
+		if (resourceURL.protocol.toLowerCase() === 'file:') {
+			return import('node:fs').then(
+				fs => {
+					try {
+						const stats = fs.statSync(resourceURL)
+						const body = fs.createReadStream(resourceURL)
+
+						return new Response(
+							body,
+							{
+								status: 200,
+								statusText: '',
+								headers: {
+									'content-length': String(stats.size),
+									'date': new Date().toUTCString(),
+									'last-modified': new Date(stats.mtimeMs).toUTCString(),
+								}
+							}
+						)
+					} catch (error) {
+						const body = new Stream.Readable()
+
+						body._read = () => {}
+						body.push(null)
+
+						return new Response(
+							body,
+							{
+								status: 404,
+								statusText: '',
+								headers: {
+									'date': new Date().toUTCString(),
+								}
+							}
+						)
+					}
+				}
+			)
+		} else {
+			return nodeFetch(resource, init)
+		}
 	}
-}
+}.fetch
 
 type USVString = ({} & string)
 

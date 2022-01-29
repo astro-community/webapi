@@ -47,9 +47,37 @@ test(() => {
 
 				assert.equal(response.constructor, target.Response)
 
+				assert.equal(response.status, 200)
+				assert.equal(response.statusText, '')
+				assert.equal(response.headers.has('date'), true)
+				assert.equal(response.headers.has('content-length'), true)
+				assert.equal(response.headers.has('last-modified'), true)
+
 				const json = await response.json()
 
 				assert.equal(json.name, '@astropub/webapi')
+			},
+		},
+		{
+			name: 'Fetch with missing file',
+			async test() {
+				const target = {}
+	
+				polyfill(target)
+
+				const { fetch } = target
+
+				const url = new URL('../missing.json', import.meta.url)
+
+				const response = await fetch(url)
+
+				assert.equal(response.constructor, target.Response)
+
+				assert.equal(response.status, 404)
+				assert.equal(response.statusText, '')
+				assert.equal(response.headers.has('date'), true)
+				assert.equal(response.headers.has('content-length'), false)
+				assert.equal(response.headers.has('last-modified'), false)
 			},
 		},
 		{

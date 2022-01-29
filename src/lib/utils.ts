@@ -27,18 +27,31 @@ export const __performance_now = performance.now as () => number
 /** Returns the string escaped for use inside regular expressions. */
 export const __string_escapeRegExp = (value: string) => value.replace(/[\\^$*+?.()|[\]{}]/g, '\\$&')
 
-/** Returns any kind of path as a posix path. */
-export const __toPosixPath = (pathname: any) => String(
-	pathname == null ? '' : pathname
-)
-// convert slashes
-.replace(/\\+/g, '/')
-// prefix a slash to drive letters
-.replace(/^(?=[A-Za-z]:\/)/, '/')
-// encode path characters
-.replace(/%/g, '%25').replace(/\n/g, '%0A').replace(/\r/g, '%0D').replace(/\t/g, '%09')
-
 export const INTERNALS = new WeakMap()
+
+export const allowed = new Set<unknown>()
+
+export const allowConstruction = allowed.add.bind(allowed)
+
+export function construct<T extends unknown, P extends {}>(target: T | object, props?: P): P {
+	if (allowed.has((target as object).constructor)) {
+		props = Object(props)
+
+		INTERNALS.set(target as object, props)
+
+		return props as P
+	} else {
+		throw new TypeError('Illegal constructor')
+	}
+}
+
+export function from<T extends object>(target: T | object, className: string, propName: string): T {
+	const internals: T = INTERNALS.get(target)
+
+	if (!internals) throw new TypeError(`${className}.${propName} can only be used on instances of ${className}`)
+
+	return internals
+}
 
 export const internalsOf = <T extends object>(target: T | object, className: string, propName: string): T => {
 	const internals: T = INTERNALS.get(target)
@@ -48,4 +61,24 @@ export const internalsOf = <T extends object>(target: T | object, className: str
 	return internals
 }
 
-export const setStringTag = (value: any) => value.prototype[Symbol.toStringTag] = value.name
+export const allowStringTag = (value: any) => value.prototype[Symbol.toStringTag] = value.name
+
+/** Returns any kind of path as a posix path. */
+export const pathToPosix = (pathname: any) => String(
+	pathname == null ? '' : pathname
+).replace(
+	// convert slashes
+	/\\+/g, '/'
+).replace(
+	// prefix a slash to drive letters
+	/^(?=[A-Za-z]:\/)/, '/'
+).replace(
+	// encode path characters
+	/%/g, '%25'
+).replace(
+	/\n/g, '%0A'
+).replace(
+	/\r/g, '%0D'
+).replace(
+	/\t/g, '%09'
+)

@@ -13,6 +13,7 @@ const readFile = (/** @type {string} */ id) => readFileCache[id] || (readFileCac
 
 const pathToDOMException = path.resolve('src', 'lib', 'DOMException.js')
 const pathToEventTargetShim = path.resolve('node_modules', 'event-target-shim', 'index.mjs')
+const pathToFetchBlobFromShim = path.resolve('node_modules', 'node_modules', 'fetch-blob', 'from.js')
 
 const plugins = [
 	typescript({
@@ -37,6 +38,7 @@ const plugins = [
 		// P: [ 'es6-promise', 'Promise' ],
 
 		'AbortController': [ 'abort-controller/dist/abort-controller.mjs', 'AbortController' ],
+		'Blob': [ 'fetch-blob/from.js', 'Blob' ],
 		'DOMException': [pathToDOMException, 'DOMException'],
 		'Document': [ './Document', 'Document' ],
 		'Element': [ './Element', 'Element' ],
@@ -93,7 +95,7 @@ const plugins = [
 				[ /\nBody\.prototype\.buffer[^\n]+/g, `` ],
 
 				// remove Body.prototype.data deprecation notice
-				[ /\n	data: \{get: deprecate[\W\w]+?\)\}/g, `` ]
+				[ /\n	data: \{get: deprecate[\W\w]+?\)\}/g, `` ],
 			]
 
 			for (const [replacee, replacer] of replacements) {

@@ -1,10 +1,10 @@
 import { setTimeout as nodeSetTimeout, clearTimeout as nodeClearTimeout } from 'node:timers'
-import { __function_bind } from './utils.js'
+import * as _ from './utils.js'
 
 const INTERNAL = { tick: 0, pool: new Map }
 
 export function setTimeout<TArgs extends any[], TFunc extends (...args: TArgs) => any>(callback: TFunc, delay = 0, ...args: TArgs): number {
-	const func = __function_bind(callback, globalThis)
+	const func = _.__function_bind(callback, globalThis)
 	const tick = ++INTERNAL.tick
 	const timeout = nodeSetTimeout(func, delay, ...args)
 

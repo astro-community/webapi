@@ -1,6 +1,6 @@
 import type { CanvasRenderingContext2D } from './CanvasRenderingContext2D'
 
-import { INTERNALS, internalsOf, setStringTag } from './utils'
+import * as _ from './utils'
 import { __createCanvasRenderingContext2D } from './CanvasRenderingContext2D'
 
 export class OffscreenCanvas extends EventTarget {
@@ -12,27 +12,27 @@ export class OffscreenCanvas extends EventTarget {
 		width = Number(width) || 0
 		height = Number(height) || 0
 
-		INTERNALS.set(this, { width, height } as OffscreenCanvasInternals)
+		_.INTERNALS.set(this, { width, height } as OffscreenCanvasInternals)
 	}
 
 	get height(): number {
-		return internalsOf(this, 'OffscreenCanvas', 'height').height
+		return _.internalsOf(this, 'OffscreenCanvas', 'height').height
 	}
 
 	set height(value) {
-		internalsOf(this, 'OffscreenCanvas', 'height').height = Number(value) || 0
+		_.internalsOf(this, 'OffscreenCanvas', 'height').height = Number(value) || 0
 	}
 
 	get width(): number {
-		return internalsOf(this, 'OffscreenCanvas', 'width').width
+		return _.internalsOf(this, 'OffscreenCanvas', 'width').width
 	}
 
 	set width(value) {
-		internalsOf(this, 'OffscreenCanvas', 'width').width = Number(value) || 0
+		_.internalsOf(this, 'OffscreenCanvas', 'width').width = Number(value) || 0
 	}
 
 	getContext(contextType: PredefinedContextId): CanvasRenderingContext2D | null {
-		const internals = internalsOf<OffscreenCanvasInternals>(this, 'HTMLCanvasElement', 'getContext')
+		const internals = _.internalsOf<OffscreenCanvasInternals>(this, 'HTMLCanvasElement', 'getContext')
 
 		switch (contextType) {
 			case '2d':
@@ -60,7 +60,7 @@ export class OffscreenCanvas extends EventTarget {
 	}
 }
 
-setStringTag(OffscreenCanvas)
+_.allowStringTag(OffscreenCanvas)
 
 const getImageType = (type: string): PredefinedImageType => type === 'image/avif' || type === 'image/jpeg' || type === 'image/png' || type === 'image/webp' ? type : 'image/png'
 

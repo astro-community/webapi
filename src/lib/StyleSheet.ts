@@ -1,4 +1,4 @@
-import { setStringTag } from './utils'
+import * as _ from './utils'
 
 export class StyleSheet {}
 
@@ -20,5 +20,5 @@ export class CSSStyleSheet extends StyleSheet {
 	}
 }
 
-setStringTag(StyleSheet)
-setStringTag(CSSStyleSheet)
+_.allowStringTag(StyleSheet)
+_.allowStringTag(CSSStyleSheet)

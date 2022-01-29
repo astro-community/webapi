@@ -48,6 +48,7 @@ import {
 	ResizeObserver,
 	Response,
 	ShadowRoot,
+	Storage,
 	StyleSheet,
 	Text,
 	TransformStream,
@@ -73,6 +74,7 @@ import {
 	initObject,
 	initPromise,
 	initRelativeIndexingMethod,
+	initStorage,
 	initString,
 	initWindow,
 } from './ponyfill'
@@ -150,6 +152,8 @@ export {
 	setTimeout,
 } from './ponyfill.js'
 
+export { pathToPosix } from './lib/utils'
+
 export const polyfill = (target: any, options?: PolyfillOptions) => {
 	const webAPIs = {
 		AbortController,
@@ -201,6 +205,7 @@ export const polyfill = (target: any, options?: PolyfillOptions) => {
 		ResizeObserver,
 		Response,
 		ShadowRoot,
+		Storage,
 		StyleSheet,
 		Text,
 		TransformStream,
@@ -287,8 +292,11 @@ export const polyfill = (target: any, options?: PolyfillOptions) => {
 	initMediaQueryList(target, excludeOptions)
 	initPromise(target, excludeOptions)
 	initRelativeIndexingMethod(target, excludeOptions)
+	initStorage(target, excludeOptions)
 	initString(target, excludeOptions)
 	initWindow(target, excludeOptions)
+
+	return target
 }
 
 polyfill.internals = (target: any, name: string) => {
@@ -299,11 +307,14 @@ polyfill.internals = (target: any, name: string) => {
 		Object: initObject,
 		Promise: initPromise,
 		RelativeIndexingMethod: initRelativeIndexingMethod,
+		Storage: initStorage,
 		String: initString,
 		Window: initWindow,
 	}
 
-	return init[name as keyof typeof init](target, new Set<string>())
+	init[name as keyof typeof init](target, new Set<string>())
+
+	return target
 }
 
 interface PolyfillOptions {

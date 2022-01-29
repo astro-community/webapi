@@ -1,4 +1,4 @@
-import { internalsOf, setStringTag } from './utils'
+import * as _ from './utils'
 
 export class Element extends Node {
 	hasAttribute(name: string): boolean {
@@ -29,7 +29,7 @@ export class Element extends Node {
 
 		if (init.mode !== 'open' && init.mode !== 'closed') throw new TypeError(`Failed to execute 'attachShadow' on 'Element': Failed to read the 'mode' property from 'ShadowRootInit': The provided value '${init.mode}' is not a valid enum value of type ShadowRootMode.`)
 
-		const internals = internalsOf<ElementInternals>(this, 'Element', 'attachShadow')
+		const internals = _.internalsOf<ElementInternals>(this, 'Element', 'attachShadow')
 
 		if (internals.shadowRoot) throw new Error('The operation is not supported.')
 
@@ -43,34 +43,38 @@ export class Element extends Node {
 		return internals.shadowRoot
 	}
 
+	get assignedSlot(): HTMLSlotElement | null {
+		return null
+	}
+
 	get innerHTML(): string {
-		internalsOf<ElementInternals>(this, 'Element', 'innerHTML')
+		_.internalsOf<ElementInternals>(this, 'Element', 'innerHTML')
 
 		return ''
 	}
 
 	set innerHTML(value) {
-		internalsOf<ElementInternals>(this, 'Element', 'innerHTML')
+		_.internalsOf<ElementInternals>(this, 'Element', 'innerHTML')
 
 		void value
 	}
 
 	get shadowRoot(): ShadowRoot | null {
-		const internals = internalsOf<ElementInternals>(this, 'Element', 'shadowRoot')
+		const internals = _.internalsOf<ElementInternals>(this, 'Element', 'shadowRoot')
 
 		return Object(internals.shadowInit).mode === 'open' ? internals.shadowRoot : null
 	}
 
 	get localName(): string {
-		return internalsOf<ElementInternals>(this, 'Element', 'localName').localName
+		return _.internalsOf<ElementInternals>(this, 'Element', 'localName').localName
 	}
 
 	get nodeName(): string {
-		return internalsOf<ElementInternals>(this, 'Element', 'nodeName').localName.toUpperCase()
+		return _.internalsOf<ElementInternals>(this, 'Element', 'nodeName').localName.toUpperCase()
 	}
 
 	get tagName(): string {
-		return internalsOf<ElementInternals>(this, 'Element', 'tagName').localName.toUpperCase()
+		return _.internalsOf<ElementInternals>(this, 'Element', 'tagName').localName.toUpperCase()
 	}
 }
 
@@ -92,16 +96,16 @@ export class HTMLTemplateElement extends HTMLElement {}
 
 export class HTMLUnknownElement extends HTMLElement {}
 
-setStringTag(Element)
-setStringTag(HTMLElement)
-setStringTag(HTMLBodyElement)
-setStringTag(HTMLDivElement)
-setStringTag(HTMLHeadElement)
-setStringTag(HTMLHtmlElement)
-setStringTag(HTMLSpanElement)
-setStringTag(HTMLStyleElement)
-setStringTag(HTMLTemplateElement)
-setStringTag(HTMLUnknownElement)
+_.allowStringTag(Element)
+_.allowStringTag(HTMLElement)
+_.allowStringTag(HTMLBodyElement)
+_.allowStringTag(HTMLDivElement)
+_.allowStringTag(HTMLHeadElement)
+_.allowStringTag(HTMLHtmlElement)
+_.allowStringTag(HTMLSpanElement)
+_.allowStringTag(HTMLStyleElement)
+_.allowStringTag(HTMLTemplateElement)
+_.allowStringTag(HTMLUnknownElement)
 
 export interface ElementInternals {
 	localName: string

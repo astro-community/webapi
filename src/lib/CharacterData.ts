@@ -1,19 +1,38 @@
-import { setStringTag } from './utils'
+import * as _ from './utils'
 
 export class CharacterData extends Node {
+	constructor(data: string) {
+		_.construct(super(), { data: String(data) } as CharacterDataInternals)
+	}
+
 	get data(): string {
-		return ''
+		return _.internalsOf<CharacterDataInternals>(this, 'CharacterData', 'data').data
+	}
+
+	get textContent(): string {
+		return _.internalsOf<CharacterDataInternals>(this, 'CharacterData', 'textContent').data
 	}
 }
 
-export function Text() {}
+export class Comment extends CharacterData {}
 
-Text.prototype = Object.create(CharacterData.prototype)
+export class Text extends CharacterData {
+	get assignedSlot(): HTMLSlotElement | null {
+		return null
+	}
 
-export function Comment() {}
+	get wholeText(): string {
+		return _.internalsOf<CharacterDataInternals>(this, 'CharacterData', 'textContent').data
+	}
+}
 
-Comment.prototype = Object.create(CharacterData.prototype)
+_.allowConstruction(Comment)
+_.allowConstruction(Text)
 
-setStringTag(CharacterData)
-setStringTag(Text)
-setStringTag(Comment)
+_.allowStringTag(CharacterData)
+_.allowStringTag(Text)
+_.allowStringTag(Comment)
+
+interface CharacterDataInternals {
+	data: string
+}

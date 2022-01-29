@@ -1,92 +1,92 @@
 import type { HTMLCanvasElement } from './HTMLCanvasElement'
 import type { OffscreenCanvas } from './OffscreenCanvas'
 
-import { INTERNALS, internalsOf, setStringTag, __object_isPrototypeOf } from './utils'
+import * as _ from './utils'
 import { ImageData } from './ImageData'
 
 export class CanvasRenderingContext2D {
 	get canvas(): HTMLCanvasElement | OffscreenCanvas | null {
-		return internalsOf(this, 'CanvasRenderingContext2D', 'canvas').canvas
+		return _.internalsOf(this, 'CanvasRenderingContext2D', 'canvas').canvas
 	}
 
 	get direction(): 'ltr' | 'rtl' | 'inherit' {
-		return internalsOf(this, 'CanvasRenderingContext2D', 'direction').direction
+		return _.internalsOf(this, 'CanvasRenderingContext2D', 'direction').direction
 	}
 
 	get fillStyle(): string {
-		return internalsOf(this, 'CanvasRenderingContext2D', 'fillStyle').fillStyle
+		return _.internalsOf(this, 'CanvasRenderingContext2D', 'fillStyle').fillStyle
 	}
 
 	get filter(): string {
-		return internalsOf(this, 'CanvasRenderingContext2D', 'filter').filter
+		return _.internalsOf(this, 'CanvasRenderingContext2D', 'filter').filter
 	}
 
 	get globalAlpha(): number {
-		return internalsOf(this, 'CanvasRenderingContext2D', 'globalAlpha').globalAlpha
+		return _.internalsOf(this, 'CanvasRenderingContext2D', 'globalAlpha').globalAlpha
 	}
 
 	get globalCompositeOperation(): string {
-		return internalsOf(this, 'CanvasRenderingContext2D', 'globalCompositeOperation').globalCompositeOperation
+		return _.internalsOf(this, 'CanvasRenderingContext2D', 'globalCompositeOperation').globalCompositeOperation
 	}
 
 	get font(): string {
-		return internalsOf(this, 'CanvasRenderingContext2D', 'font').font
+		return _.internalsOf(this, 'CanvasRenderingContext2D', 'font').font
 	}
 
 	get imageSmoothingEnabled(): boolean {
-		return internalsOf(this, 'CanvasRenderingContext2D', 'imageSmoothingEnabled').imageSmoothingEnabled
+		return _.internalsOf(this, 'CanvasRenderingContext2D', 'imageSmoothingEnabled').imageSmoothingEnabled
 	}
 
 	get imageSmoothingQuality(): 'low' | 'medium' | 'high' {
-		return internalsOf(this, 'CanvasRenderingContext2D', 'imageSmoothingQuality').imageSmoothingQuality
+		return _.internalsOf(this, 'CanvasRenderingContext2D', 'imageSmoothingQuality').imageSmoothingQuality
 	}
 
 	get lineCap(): 'butt' | 'round' | 'square' {
-		return internalsOf(this, 'CanvasRenderingContext2D', 'lineCap').lineCap
+		return _.internalsOf(this, 'CanvasRenderingContext2D', 'lineCap').lineCap
 	}
 
 	get lineDashOffset(): number {
-		return internalsOf(this, 'CanvasRenderingContext2D', 'lineDashOffset').lineDashOffset
+		return _.internalsOf(this, 'CanvasRenderingContext2D', 'lineDashOffset').lineDashOffset
 	}
 
 	get lineJoin(): 'bevel' | 'round' | 'miter' {
-		return internalsOf(this, 'CanvasRenderingContext2D', 'lineJoin').lineJoin
+		return _.internalsOf(this, 'CanvasRenderingContext2D', 'lineJoin').lineJoin
 	}
 
 	get lineWidth(): number {
-		return internalsOf(this, 'CanvasRenderingContext2D', 'lineWidth').lineWidth
+		return _.internalsOf(this, 'CanvasRenderingContext2D', 'lineWidth').lineWidth
 	}
 
 	get miterLimit(): number {
-		return internalsOf(this, 'CanvasRenderingContext2D', 'miterLimit').miterLimit
+		return _.internalsOf(this, 'CanvasRenderingContext2D', 'miterLimit').miterLimit
 	}
 
 	get strokeStyle(): string {
-		return internalsOf(this, 'CanvasRenderingContext2D', 'strokeStyle').strokeStyle
+		return _.internalsOf(this, 'CanvasRenderingContext2D', 'strokeStyle').strokeStyle
 	}
 
 	get shadowOffsetX(): number {
-		return internalsOf(this, 'CanvasRenderingContext2D', 'shadowOffsetX').shadowOffsetX
+		return _.internalsOf(this, 'CanvasRenderingContext2D', 'shadowOffsetX').shadowOffsetX
 	}
 
 	get shadowOffsetY(): number {
-		return internalsOf(this, 'CanvasRenderingContext2D', 'shadowOffsetY').shadowOffsetY
+		return _.internalsOf(this, 'CanvasRenderingContext2D', 'shadowOffsetY').shadowOffsetY
 	}
 
 	get shadowBlur(): number {
-		return internalsOf(this, 'CanvasRenderingContext2D', 'shadowBlur').shadowBlur
+		return _.internalsOf(this, 'CanvasRenderingContext2D', 'shadowBlur').shadowBlur
 	}
 
 	get shadowColor(): string {
-		return internalsOf(this, 'CanvasRenderingContext2D', 'shadowColor').shadowColor
+		return _.internalsOf(this, 'CanvasRenderingContext2D', 'shadowColor').shadowColor
 	}
 
 	get textAlign(): 'left' | 'right' | 'center' | 'start' | 'end' {
-		return internalsOf(this, 'CanvasRenderingContext2D', 'textAlign').textAlign
+		return _.internalsOf(this, 'CanvasRenderingContext2D', 'textAlign').textAlign
 	}
 
 	get textBaseline(): 'top' | 'hanging' | 'middle' | 'alphabetic' | 'ideographic' | 'bottom' {
-		return internalsOf(this, 'CanvasRenderingContext2D', 'textBaseline').textBaseline
+		return _.internalsOf(this, 'CanvasRenderingContext2D', 'textBaseline').textBaseline
 	}
 
 	arc() {}
@@ -102,7 +102,7 @@ export class CanvasRenderingContext2D {
 
 	createImageData(arg0: number | ImageData, arg1?: void | number) {
 		/** Whether ImageData is provided. */
-		const hasData = __object_isPrototypeOf(ImageData.prototype, arg0)
+		const hasData = _.__object_isPrototypeOf(ImageData.prototype, arg0)
 
 		const w = hasData ? (arg0 as ImageData).width : arg0 as number
 		const h = hasData ? (arg0 as ImageData).height : arg1 as number
@@ -146,12 +146,12 @@ export class CanvasRenderingContext2D {
 	translate() {}
 }
 
-setStringTag(CanvasRenderingContext2D)
+_.allowStringTag(CanvasRenderingContext2D)
 
 export const __createCanvasRenderingContext2D = (canvas: EventTarget): CanvasRenderingContext2D => {
 	const renderingContext2D = Object.create(CanvasRenderingContext2D.prototype) as CanvasRenderingContext2D
 
-	INTERNALS.set(renderingContext2D, {
+	_.INTERNALS.set(renderingContext2D, {
 		canvas,
 		direction: 'inherit',
 		fillStyle: '#000',

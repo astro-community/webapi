@@ -1,23 +1,23 @@
 import type { CanvasRenderingContext2D } from './CanvasRenderingContext2D'
 
-import { internalsOf, setStringTag } from './utils'
+import * as _ from './utils'
 import { __createCanvasRenderingContext2D } from './CanvasRenderingContext2D'
 
 export class HTMLCanvasElement extends HTMLElement {
 	get height(): number {
-		return internalsOf(this, 'HTMLCanvasElement', 'height').height
+		return _.internalsOf(this, 'HTMLCanvasElement', 'height').height
 	}
 
 	set height(value) {
-		internalsOf(this, 'HTMLCanvasElement', 'height').height = Number(value) || 0
+		_.internalsOf(this, 'HTMLCanvasElement', 'height').height = Number(value) || 0
 	}
 
 	get width(): number {
-		return internalsOf(this, 'HTMLCanvasElement', 'width').width
+		return _.internalsOf(this, 'HTMLCanvasElement', 'width').width
 	}
 
 	set width(value) {
-		internalsOf(this, 'HTMLCanvasElement', 'width').width = Number(value) || 0
+		_.internalsOf(this, 'HTMLCanvasElement', 'width').width = Number(value) || 0
 	}
 
 	captureStream(): null {
@@ -25,7 +25,7 @@ export class HTMLCanvasElement extends HTMLElement {
 	}
 
 	getContext(contextType: PredefinedContextId): CanvasRenderingContext2D | null {
-		const internals = internalsOf<HTMLCanvasElementInternals>(this, 'HTMLCanvasElement', 'getContext')
+		const internals = _.internalsOf<HTMLCanvasElementInternals>(this, 'HTMLCanvasElement', 'getContext')
 
 		switch (contextType) {
 			case '2d':
@@ -46,7 +46,7 @@ export class HTMLCanvasElement extends HTMLElement {
 	transferControlToOffscreen() {}
 }
 
-setStringTag(HTMLCanvasElement)
+_.allowStringTag(HTMLCanvasElement)
 
 interface HTMLCanvasElementInternals {
 	width: number

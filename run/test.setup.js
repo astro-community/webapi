@@ -3,6 +3,21 @@ import { fileURLToPath } from 'url'
 
 export { strict as assert } from 'assert'
 
+export const args = () => process.argv.slice(2).reduce(
+	(argo, arg) => {
+		if (arg.startsWith('-')) {
+			argo.opts[argo.prop = arg] = []
+		} else if (argo.prop) {
+			argo.opts[argo.prop].push(arg)
+		} else {
+			argo.paths.push(arg)
+		}
+
+		return argo
+	},
+	{ opts: {}, paths: [] }
+)
+
 export const fork = (...args) => new Promise((resolve, reject) => {
 	const child = nodeFork(...args)
 

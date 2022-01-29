@@ -27,6 +27,7 @@ import { ImageData } from './lib/ImageData'
 import { IntersectionObserver, MutationObserver, ResizeObserver } from './lib/Observer'
 import { MediaQueryList, initMediaQueryList } from './lib/MediaQueryList'
 import { OffscreenCanvas } from './lib/OffscreenCanvas'
+import { Storage, initStorage } from './lib/Storage'
 import { Window, initWindow } from './lib/Window'
 
 import { alert } from './lib/Alert'
@@ -86,6 +87,7 @@ export {
 	ResizeObserver,
 	Response,
 	ShadowRoot,
+	Storage,
 	StyleSheet,
 	Text,
 	TransformStream,
@@ -111,6 +113,7 @@ export {
 	initObject,
 	initPromise,
 	initRelativeIndexingMethod,
+	initStorage,
 	initString,
 	initWindow,
 }

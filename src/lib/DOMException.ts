@@ -1,4 +1,4 @@
-import { setStringTag } from './utils'
+import * as _ from './utils'
 
 export class DOMException extends Error {
 	constructor(message = '', name = 'Error') {
@@ -37,4 +37,4 @@ export class DOMException extends Error {
 	static DATA_CLONE_ERR = 25
 }
 
-setStringTag(DOMException)
+_.allowStringTag(DOMException)

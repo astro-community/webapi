@@ -1,8 +1,8 @@
-import { __object_hasOwnProperty } from './utils'
+import * as _ from './utils'
 
 export const hasOwn = {
 	hasOwn(instance: object, property: any) {
-		return __object_hasOwnProperty(instance, property)
+		return _.__object_hasOwnProperty(instance, property)
 	}
 }.hasOwn
 
