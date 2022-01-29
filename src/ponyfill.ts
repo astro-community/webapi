@@ -5,8 +5,9 @@ import { requestAnimationFrame, cancelAnimationFrame } from './lib/AnimationFram
 import { atob, btoa } from './lib/Base64'
 import { CharacterData, Comment, Text } from './lib/CharacterData'
 import { File, Blob } from 'fetch-blob/from.js'
-import { CustomEvent } from './lib/CustomEvent.js'
+import { CustomEvent } from './lib/CustomEvent'
 import { DOMException } from './lib/DOMException'
+import { TreeWalker } from './lib/TreeWalker'
 import { cancelIdleCallback, requestIdleCallback } from './lib/IdleCallback'
 import { Event, EventTarget } from 'event-target-shim'
 import { fetch, Headers, Request, Response } from './lib/fetch'
@@ -18,7 +19,7 @@ import { CanvasRenderingContext2D } from './lib/CanvasRenderingContext2D'
 import { CSSStyleSheet, StyleSheet } from './lib/StyleSheet'
 import { CustomElementRegistry, initCustomElementRegistry } from './lib/CustomElementRegistry'
 import { Document, HTMLDocument, initDocument } from './lib/Document'
-import { DocumentFragment, Node, ShadowRoot } from './lib/Node'
+import { DocumentFragment, Node, NodeFilter, NodeIterator, ShadowRoot } from './lib/Node'
 import { Element, HTMLElement, HTMLBodyElement, HTMLDivElement, HTMLHeadElement, HTMLHtmlElement, HTMLSpanElement, HTMLStyleElement, HTMLTemplateElement, HTMLUnknownElement } from './lib/Element'
 import { HTMLCanvasElement } from './lib/HTMLCanvasElement'
 import { HTMLImageElement } from './lib/HTMLImageElement'
@@ -75,8 +76,10 @@ export {
 	IntersectionObserver,
 	MediaQueryList,
 	MutationObserver,
-	OffscreenCanvas,
 	Node,
+	NodeFilter,
+	NodeIterator,
+	OffscreenCanvas,
 	ReadableByteStreamController,
 	ReadableStream,
 	ReadableStreamBYOBReader,
@@ -91,6 +94,7 @@ export {
 	StyleSheet,
 	Text,
 	TransformStream,
+	TreeWalker,
 	WritableStream,
 	WritableStreamDefaultController,
 	WritableStreamDefaultWriter,

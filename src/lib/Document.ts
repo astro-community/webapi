@@ -1,5 +1,6 @@
 import * as _ from './utils'
 import { Text } from './CharacterData'
+import { TreeWalker } from './TreeWalker'
 
 export class Document extends Node {
 	createElement(name: string) {
