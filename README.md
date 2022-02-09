@@ -94,6 +94,7 @@ These APIs are combined from popular open source projects and configured to shar
 - [String.prototype.at](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/at)
 - [String.prototype.replaceAll](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replaceAll)
 - [TypedArray.prototype.at](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/at)
+- [URLPattern](https://developer.mozilla.org/en-US/docs/Web/API/URLPattern)
 
 ## Usage
 

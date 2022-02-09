@@ -13,6 +13,7 @@ import { Event, EventTarget } from 'event-target-shim'
 import { fetch, Headers, Request, Response } from './lib/fetch'
 import { FormData } from 'formdata-polyfill/esm.min.js'
 import { ByteLengthQueuingStrategy, CountQueuingStrategy, ReadableByteStreamController, ReadableStream, ReadableStreamBYOBReader, ReadableStreamBYOBRequest, ReadableStreamDefaultController, ReadableStreamDefaultReader, TransformStream, WritableStream, WritableStreamDefaultController, WritableStreamDefaultWriter } from 'web-streams-polyfill/dist/ponyfill.es6.mjs'
+import { URLPattern } from 'urlpattern-polyfill'
 import { setTimeout, clearTimeout } from './lib/Timeout'
 
 import { CanvasRenderingContext2D } from './lib/CanvasRenderingContext2D'
@@ -95,6 +96,7 @@ export {
 	Text,
 	TransformStream,
 	TreeWalker,
+	URLPattern,
 	WritableStream,
 	WritableStreamDefaultController,
 	WritableStreamDefaultWriter,
