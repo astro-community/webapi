@@ -71,6 +71,7 @@ import {
 	requestAnimationFrame,
 	requestIdleCallback,
 	setTimeout,
+	structuredClone,
 
 	initCustomElementRegistry,
 	initDocument,
@@ -158,6 +159,7 @@ export {
 	requestAnimationFrame,
 	requestIdleCallback,
 	setTimeout,
+	structuredClone,
 } from './ponyfill.js'
 
 export { pathToPosix } from './lib/utils'
@@ -236,6 +238,7 @@ export const polyfill = (target: any, options?: PolyfillOptions) => {
 		requestAnimationFrame,
 		requestIdleCallback,
 		setTimeout,
+		structuredClone,
 	}
 
 	// initialize exclude options

@@ -15,6 +15,7 @@ import { FormData } from 'formdata-polyfill/esm.min.js'
 import { ByteLengthQueuingStrategy, CountQueuingStrategy, ReadableByteStreamController, ReadableStream, ReadableStreamBYOBReader, ReadableStreamBYOBRequest, ReadableStreamDefaultController, ReadableStreamDefaultReader, TransformStream, WritableStream, WritableStreamDefaultController, WritableStreamDefaultWriter } from 'web-streams-polyfill/dist/ponyfill.es6.mjs'
 import { URLPattern } from 'urlpattern-polyfill'
 import { setTimeout, clearTimeout } from './lib/Timeout'
+import structuredClone from './lib/structuredClone'
 
 import { CanvasRenderingContext2D } from './lib/CanvasRenderingContext2D'
 import { CSSStyleSheet, StyleSheet } from './lib/StyleSheet'
@@ -112,6 +113,7 @@ export {
 	requestAnimationFrame,
 	requestIdleCallback,
 	setTimeout,
+	structuredClone,
 
 	initCustomElementRegistry,
 	initDocument,

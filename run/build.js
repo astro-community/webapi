@@ -13,7 +13,7 @@ const readFile = (/** @type {string} */ id) => readFileCache[id] || (readFileCac
 
 const pathToDOMException = path.resolve('src', 'lib', 'DOMException.js')
 const pathToEventTargetShim = path.resolve('node_modules', 'event-target-shim', 'index.mjs')
-const pathToFetchBlobFromShim = path.resolve('node_modules', 'node_modules', 'fetch-blob', 'from.js')
+const pathToStructuredClone = path.resolve('node_modules', 'node_modules', '@ungap', 'structured-clone', 'esm', 'index.js')
 
 const plugins = [
 	typescript({
@@ -21,6 +21,7 @@ const plugins = [
 	}),
 	alias({
 		entries: [
+			{ find: '@ungap/structured-clone', replacement: pathToStructuredClone },
 			{ find: 'event-target-shim', replacement: pathToEventTargetShim },
 			{ find: 'event-target-shim/dist/event-target-shim.js', replacement: pathToEventTargetShim },
 			{ find: 'event-target-shim/dist/event-target-shim.umd.js', replacement: pathToEventTargetShim },

@@ -88,6 +88,7 @@ These APIs are combined from popular open source projects and configured to shar
 - [requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/requestAnimationFrame)
 - [requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/requestIdleCallback)
 - [setTimeout](https://developer.mozilla.org/en-US/docs/Web/API/setTimeout)
+- [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone)
 - [Object.hasOwn](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn)
 - [Promise.any](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/any)
 - [Array.prototype.at](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/at)
