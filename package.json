@@ -1,17 +1,21 @@
 {
   "name": "@astropub/webapi",
   "description": "Use Web APIs in Node",
-  "version": "0.10.13",
+  "version": "0.10.14",
   "type": "module",
   "exports": {
     ".": {
       "import": "./mod.js",
       "types": "./mod.d.ts"
+    },
+    "./apply": {
+      "import": "./apply.js"
     }
   },
   "main": "mod.js",
   "types": "mod.d.ts",
   "files": [
+    "apply.js",
     "mod.d.ts",
     "mod.js",
     "mod.js.map"
@@ -53,7 +57,7 @@
     "formdata-polyfill": "^4.0.10",
     "magic-string": "^0.25.7",
     "node-fetch": "^3.2.0",
-    "rollup": "^2.67.1",
+    "rollup": "^2.67.2",
     "rollup-plugin-terser": "^7.0.2",
     "urlpattern-polyfill": "^1.0.0-rc5",
     "web-streams-polyfill": "^3.2.0"

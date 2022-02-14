@@ -180,7 +180,8 @@ async function build() {
 
 		const modDTS = await readFile('./mod.d.ts')
 
-		writeFile('./mod.d.ts', modDTS.replace('\n//# sourceMappingURL=polyfill.d.ts.map', '').replace('ponyfill.js', 'mod.js'))
+		writeFile('mod.d.ts', modDTS.replace('\n//# sourceMappingURL=polyfill.d.ts.map', '').replace('ponyfill.js', 'mod.js'))
+		writeFile('apply.js', `import { polyfill } from './mod.js'\n\nexport * from './mod.js'\n\npolyfill(globalThis)\n`)
 	}
 }
 
