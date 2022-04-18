@@ -49,6 +49,7 @@ test(() => {
 				})
 
 				assert.equal(new target.Text().constructor.name, 'Text')
+				assert.equal(new target.Text().nodeName, '#text')
 				assert.equal(Object.prototype.toString.call(new target.Text()), '[object Text]')
 
 				assert.equal(new target.Text('hello').data, 'hello')

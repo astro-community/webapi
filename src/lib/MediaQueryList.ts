@@ -10,28 +10,21 @@ export class MediaQueryList extends EventTarget {
 	}
 }
 
-_.allowStringTag(MediaQueryList)
+_.assignStringTag(MediaQueryList)
 
-export const initMediaQueryList = (target: Target, exclude: Set<string>) => {
-	if (exclude.has('MediaQueryList') || exclude.has('matchMedia')) return
+export const initMediaQueryList = (target: any, exclude: Set<string>, pseudo: any) => {
+	if (!_.hasOwn(pseudo, 'matchMedia')) {
+		pseudo.matchMedia = function matchMedia(media: string) {
+			const mql = Object.setPrototypeOf(new pseudo.EventTarget, pseudo.MediaQueryList.prototype) as MediaQueryList
 
-	const EventTarget = target.EventTarget || globalThis.EventTarget
-	const MediaQueryList = target.MediaQueryList || globalThis.MediaQueryList
+			_.INTERNALS.set(mql, {
+				matches: false,
+				media,
+			})
 
-	target.matchMedia = function matchMedia(media: string) {
-		const mql = Object.setPrototypeOf(new EventTarget(), MediaQueryList.prototype) as MediaQueryList
-
-		_.INTERNALS.set(mql, {
-			matches: false,
-			media,
-		})
-
-		return mql
+			return mql
+		}
 	}
-}
 
-interface Target extends Record<any, any> {
-	matchMedia: {
-		(media: string): MediaQueryList
-	}
+	if (!exclude.has('MediaQueryList') && !exclude.has('matchMedia')) target.matchMedia = pseudo.matchMedia
 }

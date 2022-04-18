@@ -37,4 +37,4 @@ export class DOMException extends Error {
 	static DATA_CLONE_ERR = 25
 }
 
-_.allowStringTag(DOMException)
+_.assignStringTag(DOMException)

@@ -1,4 +1,5 @@
 import { performance } from 'node:perf_hooks'
+import { polyfill } from '../polyfill'
 
 /** Returns the milliseconds elapsed since January 1, 1970 00:00:00 UTC. */
 export const __date_now = Date.now
@@ -10,10 +11,13 @@ export const __function_bind = Function.bind.bind(Function.call as unknown as an
 export const __function_call = Function.call.bind(Function.call as unknown as any) as <TArgs extends any, TFunc extends (...args: TArgs[]) => any>(callback: TFunc, thisArg: unknown, ...args: TArgs[]) => ReturnType<TFunc>
 
 /** Returns an object with the specified prototype. */
-export const __object_create = Object.create as { <T extends any = any>(value: T): any extends T ? Record<any, any> : T }
+export const assign = Object.assign as <B, E, T extends B & E>(base: T, extension: E) => T
+
+/** Returns an object with the specified prototype. */
+export const create = Object.create as { <T extends any = any>(value: T): any extends T ? Record<any, any> : T }
 
 /** Returns whether an object has a property with the specified name. */
-export const __object_hasOwnProperty = Function.call.bind(Object.prototype.hasOwnProperty) as { <T1 extends object, T2>(object: T1, key: T2): T2 extends keyof T1 ? true : false } 
+export const hasOwn = Function.call.bind(Object.prototype.hasOwnProperty) as { <T1 extends object, T2>(object: T1, key: T2): T2 extends keyof T1 ? true : false } 
 
 /** Returns a string representation of an object. */
 export const __object_toString = Function.call.bind(Object.prototype.toString) as { (value: any): string }
@@ -27,8 +31,7 @@ export const __performance_now = performance.now as () => number
 /** Returns the string escaped for use inside regular expressions. */
 export const __string_escapeRegExp = (value: string) => value.replace(/[\\^$*+?.()|[\]{}]/g, '\\$&')
 
-// @ts-ignore
-export const INTERNALS = new WeakMap<unknown, any>()
+export const INTERNALS = new WeakMap<object, any>()
 
 export const internalsOf = <T extends object>(target: T | object, className: string, propName: string): T => {
 	const internals: T = INTERNALS.get(target)
@@ -38,7 +41,13 @@ export const internalsOf = <T extends object>(target: T | object, className: str
 	return internals
 }
 
-export const allowStringTag = (value: any) => value.prototype[Symbol.toStringTag] = value.name
+export const internalsTo = <T extends object>(target: object, internals: T): T => assign(
+	INTERNALS.get(target) || INTERNALS.set(target, {}).get(target),
+	internals
+)
+
+/** Assigns a string tag to the given constructor. */
+export const assignStringTag = (Class: new (...args: any) => object) => Class.prototype[Symbol.toStringTag] = Class.name
 
 /** Returns any kind of path as a posix path. */
 export const pathToPosix = (pathname: any) => String(

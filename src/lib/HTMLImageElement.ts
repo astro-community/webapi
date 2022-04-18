@@ -13,4 +13,4 @@ export class HTMLImageElement extends HTMLElement {
 	}
 }
 
-_.allowStringTag(HTMLImageElement)
+_.assignStringTag(HTMLImageElement)

@@ -3,11 +3,11 @@ type TypedArray = Int8Array | Uint8Array | Uint8ClampedArray | Int16Array | Uint
 export const at = {
 	at<T extends Array<any> | string | TypedArray>(this: T, index: number) {
 		index = Math.trunc(index) || 0
-	
+
 		if (index < 0) index += this.length;
-	
+
 		if (index < 0 || index >= this.length) return undefined;
-	
+
 		return this[index];
 	}
 }.at

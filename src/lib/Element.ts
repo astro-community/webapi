@@ -1,6 +1,23 @@
 import * as _ from './utils'
 
 export class Element extends Node {
+	constructor() {
+		super()
+
+		if (_.INTERNALS.has(new.target)) {
+			const constructorInternals = _.internalsOf<ElementConstructorInternals>(new.target, 'Element', 'ownerDocument')
+			const documentInternals = _.INTERNALS.get(constructorInternals.document) as DocumentInternals
+
+			_.INTERNALS.set(this, <ElementInternals>{
+				attributes: {},
+				localName: documentInternals.nameByConstructor.get(new.target) || '',
+				ownerDocument: constructorInternals.document,
+				shadowInit: null as unknown as ShadowRootInit,
+				shadowRoot: null as unknown as ShadowRoot,
+			})
+		}
+	}
+
 	hasAttribute(name: string): boolean {
 		void name
 
@@ -36,7 +53,7 @@ export class Element extends Node {
 			delegatesFocus: Boolean(init.delegatesFocus),
 		}
 
-		internals.shadowRoot = internals.shadowRoot || (/^open$/.test(internals.shadowInit.mode as string) ? Object.setPrototypeOf(new EventTarget(), ShadowRoot.prototype) as ShadowRoot : null)
+		internals.shadowRoot = internals.shadowRoot || (/^open$/.test(internals.shadowInit.mode) ? Object.setPrototypeOf(new EventTarget(), ShadowRoot.prototype) as ShadowRoot : null)
 
 		return internals.shadowRoot
 	}
@@ -57,6 +74,12 @@ export class Element extends Node {
 		void value
 	}
 
+	get ownerDocument(): Document | null {
+		const internals = _.internalsOf<ElementInternals>(this, 'Element', 'ownerDocument')
+
+		return internals.ownerDocument
+	}
+
 	get shadowRoot(): ShadowRoot | null {
 		const internals = _.internalsOf<ElementInternals>(this, 'Element', 'shadowRoot')
 
@@ -64,55 +87,66 @@ export class Element extends Node {
 	}
 
 	get localName(): string {
-		return _.internalsOf<ElementInternals>(this, 'Element', 'localName').localName as string
+		return _.internalsOf<ElementInternals>(this, 'Element', 'localName').localName
 	}
 
 	get nodeName(): string {
-		return (_.internalsOf<ElementInternals>(this, 'Element', 'nodeName').localName as string).toUpperCase()
+		return _.internalsOf<ElementInternals>(this, 'Element', 'nodeName').localName.toUpperCase()
 	}
 
 	get tagName(): string {
-		return (_.internalsOf<ElementInternals>(this, 'Element', 'tagName').localName as string).toUpperCase()
+		return _.internalsOf<ElementInternals>(this, 'Element', 'tagName').localName.toUpperCase()
 	}
 }
 
 export class HTMLElement extends Element {}
 
 export class HTMLBodyElement extends HTMLElement {}
-
 export class HTMLDivElement extends HTMLElement {}
-
 export class HTMLHeadElement extends HTMLElement {}
-
 export class HTMLHtmlElement extends HTMLElement {}
-
 export class HTMLSpanElement extends HTMLElement {}
-
 export class HTMLStyleElement extends HTMLElement {}
-
 export class HTMLTemplateElement extends HTMLElement {}
-
 export class HTMLUnknownElement extends HTMLElement {}
 
-_.allowStringTag(Element)
-_.allowStringTag(HTMLElement)
-_.allowStringTag(HTMLBodyElement)
-_.allowStringTag(HTMLDivElement)
-_.allowStringTag(HTMLHeadElement)
-_.allowStringTag(HTMLHtmlElement)
-_.allowStringTag(HTMLSpanElement)
-_.allowStringTag(HTMLStyleElement)
-_.allowStringTag(HTMLTemplateElement)
-_.allowStringTag(HTMLUnknownElement)
+_.assignStringTag(Element)
+_.assignStringTag(HTMLElement)
+_.assignStringTag(HTMLBodyElement)
+_.assignStringTag(HTMLDivElement)
+_.assignStringTag(HTMLHeadElement)
+_.assignStringTag(HTMLHtmlElement)
+_.assignStringTag(HTMLSpanElement)
+_.assignStringTag(HTMLStyleElement)
+_.assignStringTag(HTMLTemplateElement)
+_.assignStringTag(HTMLUnknownElement)
 
-export interface ElementInternals {
-	attributes: { [name: string]: string },
-	localName?: string
-	shadowRoot: ShadowRoot | null
-	shadowInit: ShadowRootInit | void
+// interfaces
+// -----------------------------------------------------------------------------
+
+interface ElementConstructorInternals {
+	document: Document
 }
 
-export interface ShadowRootInit {
+interface ElementInternals {
+	attributes: { [name: string]: string }
+	localName: string
+	ownerDocument: Document
+	shadowInit: ShadowRootInit | void
+	shadowRoot: ShadowRoot | null
+}
+
+interface ShadowRootInit {
 	mode: 'open' | 'closed'
 	delegatesFocus: boolean
+}
+
+interface DocumentInternals {
+	activeElement: HTMLElement,
+	body: HTMLBodyElement
+	documentElement: HTMLHtmlElement
+	head: HTMLHeadElement
+
+	constructorByName: Map<string, Function>
+	nameByConstructor: Map<Function, string>
 }

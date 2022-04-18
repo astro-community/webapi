@@ -2,10 +2,13 @@ import * as _ from './utils'
 
 export class CharacterData extends Node {
 	constructor(data: string) {
-		_.INTERNALS.set(super(), {
+		super()
+
+		_.INTERNALS.set(this, {
 			data: String(data),
 		} as CharacterDataInternals)
 	}
+
 	get data(): string {
 		return _.internalsOf<CharacterDataInternals>(this, 'CharacterData', 'data').data
 	}
@@ -25,11 +28,15 @@ export class Text extends CharacterData {
 	get wholeText(): string {
 		return _.internalsOf<CharacterDataInternals>(this, 'CharacterData', 'textContent').data
 	}
+
+	get nodeName() {
+		return '#text'
+	}
 }
 
-_.allowStringTag(CharacterData)
-_.allowStringTag(Text)
-_.allowStringTag(Comment)
+_.assignStringTag(CharacterData)
+_.assignStringTag(Text)
+_.assignStringTag(Comment)
 
 interface CharacterDataInternals {
 	data: string

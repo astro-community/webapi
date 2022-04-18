@@ -20,5 +20,5 @@ export class CSSStyleSheet extends StyleSheet {
 	}
 }
 
-_.allowStringTag(StyleSheet)
-_.allowStringTag(CSSStyleSheet)
+_.assignStringTag(StyleSheet)
+_.assignStringTag(CSSStyleSheet)

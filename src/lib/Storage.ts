@@ -30,7 +30,7 @@ export class Storage {
 
 const getStringOrNull = (value: string | void) => typeof value === 'string' ? value : null
 
-export const initStorage = (target: Target, exclude: Set<string>) => {
+export const initStorage = (target: any, exclude: Set<string>) => {
 	if (exclude.has('Storage') || exclude.has('localStorage')) return
 
 	target.localStorage = Object.create(Storage.prototype)
@@ -44,8 +44,4 @@ export const initStorage = (target: Target, exclude: Set<string>) => {
 
 interface StorageInternals {
 	storage: Map<string, string>
-}
-
-interface Target {
-	localStorage: Storage
 }

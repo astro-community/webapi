@@ -51,7 +51,7 @@ export class ImageData {
 	}
 }
 
-_.allowStringTag(ImageData)
+_.assignStringTag(ImageData)
 
 /** Returns a coerced number, optionally throwing if the number is zero-ish. */
 const asNumber = (value: any, axis: string): number => {

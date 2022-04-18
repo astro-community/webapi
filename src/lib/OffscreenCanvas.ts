@@ -60,7 +60,7 @@ export class OffscreenCanvas extends EventTarget {
 	}
 }
 
-_.allowStringTag(OffscreenCanvas)
+_.assignStringTag(OffscreenCanvas)
 
 const getImageType = (type: string): PredefinedImageType => type === 'image/avif' || type === 'image/jpeg' || type === 'image/png' || type === 'image/webp' ? type : 'image/png'
 

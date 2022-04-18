@@ -2,57 +2,91 @@ import * as _ from './utils'
 
 export class CustomElementRegistry {
 	/** Defines a new custom element using the given tag name and HTMLElement constructor. */
-	define(name: string, constructor: Function, options?: ElementDefinitionOptions) {
+	define(localName: string, constructor: Function, options?: ElementDefinitionOptions) {
 		const internals = _.internalsOf<CustomElementRegistryInternals>(this, 'CustomElementRegistry', 'define')
+		const document = internals.document
+		const documentInternals = _.internalsOf<DocumentInternals>(document, 'CustomElementRegistry', 'define')
 
-		name = String(name)
+		localName = getCustomElementLocalName(localName)
 
-		if (/[A-Z]/.test(name)) throw new SyntaxError('Custom element name cannot contain an uppercase ASCII letter')
-		if (!/^[a-z]/.test(name)) throw new SyntaxError('Custom element name must have a lowercase ASCII letter as its first character')
-		if (!/-/.test(name)) throw new SyntaxError('Custom element name must contain a hyphen')
+		documentInternals.constructorByName.set(localName, constructor)
+		documentInternals.nameByConstructor.set(constructor, localName)
 
-		internals.constructorByName.set(name, constructor)
-		internals.nameByConstructor.set(constructor, name)
+		_.INTERNALS.set(constructor, <ElementConstructorInternals>{ document })
 
 		void options
 	}
 
 	/** Returns the constructor associated with the given tag name. */
-	get(name: string) {
-		const internals = _.internalsOf<CustomElementRegistryInternals>(this, 'CustomElementRegistry', 'get')
+	get(localName: string) {
+		const internals = _.internalsOf<CustomElementRegistryInternals>(this, 'CustomElementRegistry', 'define')
+		const documentInternals = _.internalsOf<DocumentInternals>(internals.document, 'CustomElementRegistry', 'define')
 
-		name = String(name).toLowerCase()
-
-		return internals.constructorByName.get(name)
+		return documentInternals.constructorByName.get(localName)
 	}
 
 	getName(constructor: Function) {
-		const internals = _.internalsOf<CustomElementRegistryInternals>(this, 'CustomElementRegistry', 'getName')
+		const internals = _.internalsOf<CustomElementRegistryInternals>(this, 'CustomElementRegistry', 'define')
+		const documentInternals = _.internalsOf<DocumentInternals>(internals.document, 'CustomElementRegistry', 'define')
 
-		return internals.nameByConstructor.get(constructor)
+		return documentInternals.nameByConstructor.get(constructor)
 	}
 }
 
-_.allowStringTag(CustomElementRegistry)
+_.assignStringTag(CustomElementRegistry)
 
-interface CustomElementRegistryInternals {
-	constructorByName: Map<string, Function>;
-	nameByConstructor: Map<Function, string>;
+// initialization
+// -----------------------------------------------------------------------------
+
+export const initCustomElementRegistry = (target: any, exclude: Set<string>, pseudo: any) => {
+	if (!_.hasOwn(pseudo, 'customElements')) {
+		/** Reference to the CustomElementRegistry object. */
+		const customElements: CustomElementRegistry = pseudo.customElements = target.customElements || Object.create(target.CustomElementRegistry.prototype)
+
+		_.internalsTo<CustomElementRegistryInternals>(customElements, {
+			document: pseudo.document
+		})
+	}
+
+	if (!exclude.has('customElements')) target.customElements = pseudo.customElements
 }
+
+// internal functionality
+// -----------------------------------------------------------------------------
+
+const getCustomElementLocalName = (localName: any): string => {
+	localName = String(localName)
+
+	if (/[A-Z]/.test(localName)) throw new SyntaxError('Custom element name cannot contain an uppercase ASCII letter')
+	if (!/^[a-z]/.test(localName)) throw new SyntaxError('Custom element name must have a lowercase ASCII letter as its first character')
+	if (!/-/.test(localName)) throw new SyntaxError('Custom element name must contain a hyphen')
+
+	localName = localName.toLowerCase()
+
+	return localName
+}
+
+// interfaces
+// -----------------------------------------------------------------------------
 
 interface ElementDefinitionOptions {
 	extends?: string | undefined;
 }
 
-export const initCustomElementRegistry = (target: Record<any, any>, exclude: Set<string>) => {
-	if (exclude.has('customElements')) return
+interface CustomElementRegistryInternals {
+	document: Document
+}
 
-	const CustomElementRegistry = target.CustomElementRegistry || globalThis.CustomElementRegistry
+interface DocumentInternals {
+	activeElement: HTMLElement,
+	body: HTMLBodyElement
+	documentElement: HTMLHtmlElement
+	head: HTMLHeadElement
 
-	const customElements: CustomElementRegistry = target.customElements = Object.create(CustomElementRegistry.prototype)
+	constructorByName: Map<string, Function>
+	nameByConstructor: Map<Function, string>
+}
 
-	_.INTERNALS.set(customElements, {
-		constructorByName: new Map,
-		nameByConstructor: new Map,
-	} as CustomElementRegistryInternals)
+interface ElementConstructorInternals {
+	document: Document
 }

@@ -46,7 +46,7 @@ export class HTMLCanvasElement extends HTMLElement {
 	transferControlToOffscreen() {}
 }
 
-_.allowStringTag(HTMLCanvasElement)
+_.assignStringTag(HTMLCanvasElement)
 
 interface HTMLCanvasElementInternals {
 	width: number

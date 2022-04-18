@@ -36,6 +36,6 @@ export class ResizeObserver {
 	unobserve() {}
 }
 
-_.allowStringTag(MutationObserver)
-_.allowStringTag(IntersectionObserver)
-_.allowStringTag(ResizeObserver)
+_.assignStringTag(MutationObserver)
+_.assignStringTag(IntersectionObserver)
+_.assignStringTag(ResizeObserver)

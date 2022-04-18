@@ -13,6 +13,7 @@ import { Event, EventTarget } from 'event-target-shim'
 import { fetch, Headers, Request, Response } from './lib/fetch'
 import { FormData } from 'formdata-polyfill/esm.min.js'
 import { ByteLengthQueuingStrategy, CountQueuingStrategy, ReadableByteStreamController, ReadableStream, ReadableStreamBYOBReader, ReadableStreamBYOBRequest, ReadableStreamDefaultController, ReadableStreamDefaultReader, TransformStream, WritableStream, WritableStreamDefaultController, WritableStreamDefaultWriter } from 'web-streams-polyfill/dist/ponyfill.es6.mjs'
+// @ts-expect-error
 import { URLPattern } from 'urlpattern-polyfill'
 import { setTimeout, clearTimeout } from './lib/Timeout'
 import structuredClone from './lib/structuredClone'

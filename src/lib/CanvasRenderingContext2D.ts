@@ -146,7 +146,7 @@ export class CanvasRenderingContext2D {
 	translate() {}
 }
 
-_.allowStringTag(CanvasRenderingContext2D)
+_.assignStringTag(CanvasRenderingContext2D)
 
 export const __createCanvasRenderingContext2D = (canvas: EventTarget): CanvasRenderingContext2D => {
 	const renderingContext2D = Object.create(CanvasRenderingContext2D.prototype) as CanvasRenderingContext2D

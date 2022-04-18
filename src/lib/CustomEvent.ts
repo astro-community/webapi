@@ -13,7 +13,7 @@ class CustomEvent<TEventType extends string = string> extends Event<TEventType> 
 	detail!: any
 }
 
-_.allowStringTag(CustomEvent)
+_.assignStringTag(CustomEvent)
 
 export { CustomEvent }
 

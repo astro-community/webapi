@@ -84,6 +84,8 @@ import {
 	initWindow,
 } from './ponyfill'
 
+import * as _ from './lib/utils'
+
 import { exclusions } from './exclusions'
 import { inheritence } from './inheritence'
 
@@ -165,7 +167,9 @@ export {
 export { pathToPosix } from './lib/utils'
 
 export const polyfill = (target: any, options?: PolyfillOptions) => {
-	const webAPIs = {
+	target = Object(target)
+
+	let pseudo = _.assign(_.create(null) as any, {
 		AbortController,
 		AbortSignal,
 		Blob,
@@ -227,7 +231,7 @@ export const polyfill = (target: any, options?: PolyfillOptions) => {
 		WritableStreamDefaultController,
 		WritableStreamDefaultWriter,
 		Window,
-
+	
 		alert,
 		atob,
 		btoa,
@@ -239,7 +243,15 @@ export const polyfill = (target: any, options?: PolyfillOptions) => {
 		requestIdleCallback,
 		setTimeout,
 		structuredClone,
-	}
+	})
+
+	_.INTERNALS.set(target, pseudo)
+
+	pseudo = new Proxy(pseudo, {
+		get(pseudo, name) {
+			return target[name] || globalThis[name] || pseudo[name]
+		},
+	})
 
 	// initialize exclude options
 	const excludeOptions = new Set(
@@ -262,28 +274,16 @@ export const polyfill = (target: any, options?: PolyfillOptions) => {
 		}
 	}
 
-	// apply each WebAPI
-	for (const name of Object.keys(webAPIs)) {
-		// skip WebAPIs that are excluded
-		if (excludeOptions.has(name)) continue
-
-		// skip WebAPIs that are built-in 
-		if (Object.hasOwnProperty.call(target, name)) continue
-
-		// define WebAPIs on the target
-		Object.defineProperty(target, name, { configurable: true, enumerable: true, writable: true, value: webAPIs[name as keyof typeof webAPIs] })
-	}
-
 	// ensure WebAPIs correctly inherit other WebAPIs
-	for (const name of Object.keys(webAPIs)) {
+	for (const name in pseudo) {
 		// skip WebAPIs that are excluded
 		if (excludeOptions.has(name)) continue
 
 		// skip WebAPIs that do not extend other WebAPIs
 		if (!Object.hasOwnProperty.call(inheritence, name)) continue
 
-		const Class = target[name]
-		const Super = target[inheritence[name as keyof typeof inheritence]]
+		const Class = pseudo[name]
+		const Super = pseudo[inheritence[name as keyof typeof inheritence]]
 
 		// skip WebAPIs that are not available
 		if (!Class || !Super) continue
@@ -295,16 +295,23 @@ export const polyfill = (target: any, options?: PolyfillOptions) => {
 		Object.setPrototypeOf(Class.prototype, Super.prototype)
 	}
 
-	if (!excludeOptions.has('HTMLDocument') && !excludeOptions.has('HTMLElement')) {
-		initDocument(target, excludeOptions)
+	// apply each WebAPI
+	for (const name in pseudo) {
+		// skip WebAPIs that are excluded
+		if (excludeOptions.has(name)) continue
 
-		if (!excludeOptions.has('CustomElementRegistry')) {
-			initCustomElementRegistry(target, excludeOptions)
-		}
+		// skip WebAPIs that are built-in 
+		if (Object.hasOwnProperty.call(target, name)) continue
+
+		// define WebAPIs on the target
+		Object.defineProperty(target, name, { configurable: true, enumerable: true, writable: true, value: pseudo[name as keyof typeof pseudo] })
 	}
 
+	initDocument(target, excludeOptions, pseudo)
+	initCustomElementRegistry(target, excludeOptions, pseudo)
+	initMediaQueryList(target, excludeOptions, pseudo)
+
 	initObject(target, excludeOptions)
-	initMediaQueryList(target, excludeOptions)
 	initPromise(target, excludeOptions)
 	initRelativeIndexingMethod(target, excludeOptions)
 	initStorage(target, excludeOptions)
@@ -315,6 +322,8 @@ export const polyfill = (target: any, options?: PolyfillOptions) => {
 }
 
 polyfill.internals = (target: any, name: string) => {
+	const pseudo = _.INTERNALS.get(target)
+
 	const init = {
 		CustomElementRegistry: initCustomElementRegistry,
 		Document: initDocument,
@@ -327,10 +336,12 @@ polyfill.internals = (target: any, name: string) => {
 		Window: initWindow,
 	}
 
-	init[name as keyof typeof init](target, new Set<string>())
+	init[name as keyof typeof init](target, new Set<string>(), pseudo)
 
 	return target
 }
+
+declare const globalThis: any
 
 interface PolyfillOptions {
 	exclude?: string | string[]

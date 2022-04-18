@@ -83,5 +83,25 @@ test(() => {
 				assert.equal(customElement.method(), testSymbol)
 			},
 		},
+		{
+			name: 'Supports Custom Elements with new',
+			test() {
+				const target = {}
+
+				polyfill(target)
+
+				const CustomElement = class HTMLCustomElement extends target.HTMLElement {}
+
+				target.customElements.define('custom-element', CustomElement)
+
+				const customElement = new CustomElement()
+
+				assert.equal(customElement instanceof CustomElement, true)
+				assert.equal(customElement instanceof target.HTMLElement, true)
+				assert.equal(customElement instanceof target.Element, true)
+				assert.equal(customElement instanceof target.Node, true)
+				assert.equal(customElement instanceof target.EventTarget, true)
+			},
+		},
 	]
 })

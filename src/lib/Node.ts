@@ -146,10 +146,10 @@ export class NodeIterator {
 	}
 }
 
-_.allowStringTag(Node)
-_.allowStringTag(NodeIterator)
-_.allowStringTag(DocumentFragment)
-_.allowStringTag(ShadowRoot)
+_.assignStringTag(Node)
+_.assignStringTag(NodeIterator)
+_.assignStringTag(DocumentFragment)
+_.assignStringTag(ShadowRoot)
 
 type NodeOrString = string | Node
 

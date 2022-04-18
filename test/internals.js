@@ -7,10 +7,10 @@ test(() => {
 			name: 'Includes polyfill.internals functionality',
 			test() {
 				const target = {}
-	
+
 				polyfill(target, { exclude: 'window document' })
 
-				const pseudo = { ...target }
+				const pseudo = target
 
 				assert.equal(Reflect.has(pseudo, 'document'), false)
 

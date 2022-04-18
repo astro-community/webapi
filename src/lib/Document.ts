@@ -6,21 +6,19 @@ export class Document extends Node {
 	createElement(name: string) {
 		const internals = _.internalsOf<DocumentInternals>(this, 'Document', 'createElement')
 
-		const customElementInternals: CustomElementRegistryInternals = _.INTERNALS.get(internals.target.customElements)
-
 		name = String(name).toLowerCase()
 
-		const TypeOfHTMLElement = internals.constructorByName.get(name) || (customElementInternals && customElementInternals.constructorByName.get(name)) || HTMLUnknownElement
+		const TypeOfHTMLElement = internals.constructorByName.get(name) || HTMLUnknownElement
 
 		const element = Object.setPrototypeOf(new EventTarget(), TypeOfHTMLElement.prototype) as HTMLElement
 
-		_.INTERNALS.set(element, {
+		_.INTERNALS.set(element, <ElementInternals>{
 			attributes: {},
 			localName: name,
 			ownerDocument: this,
 			shadowInit: null as unknown as ShadowRootInit,
 			shadowRoot: null as unknown as ShadowRoot,
-		} as ElementInternals)
+		})
 
 		return element
 	}
@@ -53,6 +51,7 @@ export class Document extends Node {
 		return []
 	}
 
+	activeElement!: HTMLElement
 	body!: HTMLBodyElement
 	documentElement!: HTMLHtmlElement
 	head!: HTMLHeadElement
@@ -60,61 +59,60 @@ export class Document extends Node {
 
 export class HTMLDocument extends Document {}
 
-_.allowStringTag(Document)
-_.allowStringTag(HTMLDocument)
+_.assignStringTag(Document)
+_.assignStringTag(HTMLDocument)
 
-export const initDocument = (target: Target, exclude: Set<string>) => {
-	if (exclude.has('document')) return
+// initialization
+// -----------------------------------------------------------------------------
 
-	const EventTarget = target.EventTarget || globalThis.EventTarget
-	const HTMLDocument = target.HTMLDocument || globalThis.HTMLDocument
+export const initDocument = (target: any, exclude: Set<string>, pseudo: any) => {
+	if (!_.hasOwn(pseudo, 'document')) {
+		/** Reference to the HTMLDocument object. */
+		const document: HTMLDocument = pseudo.document = pseudo.document || Object.setPrototypeOf(new pseudo.EventTarget, pseudo.HTMLDocument.prototype)
 
-	const document: HTMLDocument = target.document = Object.setPrototypeOf(new EventTarget(), HTMLDocument.prototype)
+		/** Document internals. */
+		const internals = _.internalsTo<DocumentInternals>(document, {
+			constructorByName: new Map,
+			nameByConstructor: new Map,
+		})
 
-	_.INTERNALS.set(document, {
-		target,
-		constructorByName: new Map<string, Function>([
-			['body', target.HTMLBodyElement],
-			['canvas', target.HTMLCanvasElement],
-			['div', target.HTMLDivElement],
-			['head', target.HTMLHeadElement],
-			['html', target.HTMLHtmlElement],
-			['img', target.HTMLImageElement],
-			['span', target.HTMLSpanElement],
-			['style', target.HTMLStyleElement],
-		]),
-		nameByConstructor: new Map,
-	} as DocumentInternals)
+		const registerConstructor = (constructor: Function, name: string) => {
+			internals.constructorByName.set(name, constructor)
+			internals.nameByConstructor.set(constructor, name)
 
-	const initElement = (name: string, Class: Function) => {
-		const target = Object.setPrototypeOf(new EventTarget(), Class.prototype)
+			_.internalsTo<ElementConstructorInternals>(constructor, { document })
+		}
 
-		_.INTERNALS.set(target, {
-			attributes: {},
-			localName: name,
-			ownerDocument: document,
-			shadowRoot: null as unknown as ShadowRoot,
-			shadowInit: null as unknown as ShadowRootInit,
-		} as ElementInternals)
-
-		return target
+		registerConstructor(pseudo.HTMLElement, 'article')
+		registerConstructor(pseudo.HTMLElement, 'aside')
+		registerConstructor(pseudo.HTMLBodyElement, 'body')
+		registerConstructor(pseudo.HTMLCanvasElement, 'canvas')
+		registerConstructor(pseudo.HTMLDivElement, 'div')
+		registerConstructor(pseudo.HTMLElement, 'footer')
+		registerConstructor(pseudo.HTMLHeadElement, 'head')
+		registerConstructor(pseudo.HTMLElement, 'header')
+		registerConstructor(pseudo.HTMLHtmlElement, 'html')
+		registerConstructor(pseudo.HTMLImageElement, 'img')
+		registerConstructor(pseudo.HTMLElement, 'main')
+		registerConstructor(pseudo.HTMLElement, 'nav')
+		registerConstructor(pseudo.HTMLElement, 'section')
+		registerConstructor(pseudo.HTMLSpanElement, 'span')
+		registerConstructor(pseudo.HTMLStyleElement, 'style')
+		
+		_.assign(document, {
+			body: document.createElement('body'),
+			documentElement: document.createElement('html'),
+			head: document.createElement('head'),
+		})
 	}
 
-	document.body = initElement('body', target.HTMLBodyElement) as HTMLBodyElement
-	document.head = initElement('head', target.HTMLHeadElement) as HTMLHeadElement
-	document.documentElement = initElement('html', target.HTMLHtmlElement) as HTMLHtmlElement
+	if (!exclude.has('document')) target.document = pseudo.document
 }
+
+// interfaces
+// -----------------------------------------------------------------------------
 
 interface DocumentInternals {
-	body: HTMLBodyElement
-	documentElement: HTMLHtmlElement
-	head: HTMLHeadElement
-	constructorByName: Map<string, Function>
-	nameByConstructor: Map<Function, string>
-	target: Target
-}
-
-interface CustomElementRegistryInternals {
 	constructorByName: Map<string, Function>
 	nameByConstructor: Map<Function, string>
 }
@@ -131,18 +129,6 @@ interface ShadowRootInit extends Record<any, any> {
 	mode?: string
 }
 
-interface Target extends Record<any, any> {
-	HTMLBodyElement: typeof HTMLBodyElement
-	HTMLDivElement: typeof HTMLDivElement
-	HTMLElement: typeof HTMLElement
-	HTMLHeadElement: typeof HTMLHeadElement
-	HTMLHtmlElement: typeof HTMLHtmlElement
-	HTMLSpanElement: typeof HTMLSpanElement
-	HTMLStyleElement: typeof HTMLStyleElement
-	customElements: CustomElementRegistry
-	document: DocumentInternals
-}
-
 interface NodeIteratorInternals {
 	filter: NodeFilter
 	pointerBeforeReferenceNode: boolean
@@ -156,4 +142,8 @@ interface TreeWalkerInternals {
 	currentNode: Node
 	root: Node
 	whatToShow: number
+}
+
+interface ElementConstructorInternals {
+	document: Document
 }

@@ -30,9 +30,9 @@ export class Window extends EventTarget {
 	}
 }
 
-_.allowStringTag(Window)
+_.assignStringTag(Window)
 
-export const initWindow = (target: Target, exclude: Set<string>) => {
+export const initWindow = (target: any, exclude: Set<string>) => {
 	if (exclude.has('Window') || exclude.has('window')) return
 
 	target.window = target
@@ -41,9 +41,5 @@ export const initWindow = (target: Target, exclude: Set<string>) => {
 export interface WindowInternals {
 	document: null
 	location: URL
-	window: this
-}
-
-interface Target extends Record<any, any> {
 	window: this
 }

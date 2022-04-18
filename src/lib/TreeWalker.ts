@@ -45,7 +45,7 @@ export class TreeWalker {
 	}
 }
 
-_.allowStringTag(TreeWalker)
+_.assignStringTag(TreeWalker)
 
 export interface TreeWalkerInternals {
 	filter: NodeFilter
